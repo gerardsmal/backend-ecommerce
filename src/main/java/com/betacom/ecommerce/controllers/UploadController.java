@@ -27,7 +27,7 @@ public class UploadController {
 		this.uplS = uplS;
 	}
 	 
-	@PostMapping(consumes = "multipart/form-data")
+	@PostMapping(value = "/image", consumes = "multipart/form-data")
 	public ResponseEntity<?> uploadImage(@RequestParam("file") MultipartFile file) {
 		try {
 			 /*
