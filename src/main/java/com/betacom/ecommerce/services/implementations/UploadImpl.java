@@ -13,6 +13,9 @@ import org.springframework.web.multipart.MultipartFile;
 import com.betacom.ecommerce.services.interfaces.IUploadServices;
 import com.betacom.ecommerce.services.interfaces.IValidationServices;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class UploadImpl implements IUploadServices{
 	
@@ -39,6 +42,7 @@ public class UploadImpl implements IUploadServices{
 	
 	@Override
 	public String saveImage(MultipartFile file) throws Exception {
+		log.debug("saveImage:" + file);
 		
 		Assert.isTrue(!file.isEmpty(), validS.getMessaggio("upload_empty"));
 		
