@@ -4,7 +4,10 @@ import java.util.Arrays;
 import java.util.Optional;
 
 public enum Supporto {
-	CD, Vinile, MP3, Video;
+	CD, 
+	Vinile, 
+	MP3, 
+	Video;
 
 	public static Supporto safeValueOf(String value) {
 		if (value == null)

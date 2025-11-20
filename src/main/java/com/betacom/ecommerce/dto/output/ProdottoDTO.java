@@ -13,6 +13,7 @@ import lombok.Setter;
 public class ProdottoDTO {
 	private Integer id;
 	private String descrizione;
+	private String image;
 	private FamigliaDTO famiglia;
 	private ArtistaDTO artista;
 	private List<PrezzoDTO> prezzo;

@@ -24,8 +24,8 @@ public class UploadController {
 	private final IValidationServices valS;
 	
 	 
-	@Value("${app.images.url-prefix:/images}")
-	private String imagesUrlPrefix;
+//	@Value("${app.images.url-prefix:/images}")
+//	private String imagesUrlPrefix;
 
 	public UploadController(IUploadServices uplS, IValidationServices valS) {
 		this.uplS = uplS;
@@ -33,7 +33,9 @@ public class UploadController {
 	}
 	 
 	@PostMapping(value = "/image", consumes = "multipart/form-data")
-	public ResponseEntity<Response> uploadImage(@RequestParam MultipartFile file) {
+	public ResponseEntity<Response> uploadImage(
+			@RequestParam MultipartFile file,
+			@RequestParam Integer id) {
 		Response r = new Response();
 		HttpStatus status = HttpStatus.OK;
 		try {
@@ -48,7 +50,7 @@ public class UploadController {
 	                return ResponseEntity.badRequest().body(r);	            
 			 }
 			 
-			 r.setMsg(uplS.saveImage(file));
+			 r.setMsg(uplS.saveImage(file, id));
 			 
 			 return ResponseEntity.status(HttpStatus.CREATED).body(r);
 			 
@@ -63,11 +65,7 @@ public class UploadController {
 		Response r = new Response();
 		HttpStatus status = HttpStatus.OK;
 		
-		 String fileUrl = ServletUriComponentsBuilder.fromCurrentContextPath()  // recupera la parte iniziale dell URL // localhost:8080/
-                 .path(imagesUrlPrefix + "/")    // il prefisse sarebbe image
-                 .path(filename)                 // il nome del file
-                 .toUriString();
-		 r.setMsg(fileUrl);
-		 return ResponseEntity.status(status).body(r);
+		r.setMsg(uplS.buildUrl(filename));
+		return ResponseEntity.status(status).body(r);
 	}
 }

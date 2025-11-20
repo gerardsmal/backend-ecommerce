@@ -3,12 +3,17 @@ package com.betacom.ecommerce.services.implementations;
 import static com.betacom.ecommerce.utils.Utilities.buildFamigliaDTOList;
 import static com.betacom.ecommerce.utils.Utilities.buildPrezzoDTOList;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.betacom.ecommerce.controllers.UploadController;
 import com.betacom.ecommerce.dto.input.ProdottoReq;
 import com.betacom.ecommerce.dto.output.ArtistaDTO;
 import com.betacom.ecommerce.dto.output.FamigliaDTO;
@@ -22,6 +27,7 @@ import com.betacom.ecommerce.repositories.IFamigliaRepository;
 import com.betacom.ecommerce.repositories.IProdottoRepository;
 import com.betacom.ecommerce.services.interfaces.IValidationServices;
 import com.betacom.ecommerce.services.interfaces.IProdottoServices;
+import com.betacom.ecommerce.services.interfaces.IUploadServices;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -31,16 +37,19 @@ public class ProdottoImpl implements IProdottoServices{
 
 	private IProdottoRepository repP;
 	private IArtistRepository   artistR;
-	private IValidationServices   validS;
+	private IValidationServices validS;
+	private IUploadServices     uploadS;
 
 	
 	public ProdottoImpl(IProdottoRepository repP, 
 			IFamigliaRepository repF, 
 			IArtistRepository   artistR,
-			IValidationServices   msgS) {
+			IValidationServices   msgS,
+			IUploadServices      uploadS) {
 		this.repP = repP;
 		this.artistR = artistR;
 		this.validS = msgS;
+		this.uploadS = uploadS;
 	}
 
 
@@ -100,11 +109,18 @@ public class ProdottoImpl implements IProdottoServices{
 	@Override
 	public void delete(Integer id) throws Exception {
 		log.debug("Begin delete:" + id);
+	
+		
 		Prodotto prod = repP.findById(id)
 				.orElseThrow(() -> new Exception(validS.getMessaggio("prod_ntfnd")));
 		
 		if (!prod.getRigaCarello().isEmpty())
 			throw new Exception(validS.getMessaggio("prod_carello_fnd"));
+		
+		Optional.ofNullable(prod.getImage())
+			.ifPresent(image -> {
+				uploadS.removeImage(image);
+			});
 		
 		repP.delete(prod);
 		
@@ -122,6 +138,7 @@ public class ProdottoImpl implements IProdottoServices{
 				.map(p -> ProdottoDTO.builder()
 						.id(p.getId())
 						.descrizione(p.getDescrizione())
+						.image(p.getImage() == null ? null : uploadS.buildUrl(p.getImage()))
 						.famiglia(FamigliaDTO.builder()
 								.id(p.getFamiglia().getId())
 								.descrizione(p.getFamiglia().getDescrizione())
@@ -149,6 +166,7 @@ public class ProdottoImpl implements IProdottoServices{
 		return ProdottoDTO.builder()
 				.id(p.getId())
 				.descrizione(p.getDescrizione())
+				.image(p.getImage() == null ? null : uploadS.buildUrl(p.getImage()))
 				.famiglia(FamigliaDTO.builder()
 						.id(p.getFamiglia().getId())
 						.descrizione(p.getFamiglia().getDescrizione())
@@ -163,7 +181,7 @@ public class ProdottoImpl implements IProdottoServices{
 				.build();
 				
 	}
-
+	
 	
 	
 	/*

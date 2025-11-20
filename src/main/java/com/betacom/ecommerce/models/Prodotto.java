@@ -32,6 +32,8 @@ public class Prodotto {
 			nullable = false)
 	private String descrizione;
 	
+	private String image;
+	
 	
 	@ManyToOne (optional = false)
 	@JoinColumn (name="id_artista" , nullable = false)

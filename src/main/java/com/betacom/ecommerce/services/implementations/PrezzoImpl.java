@@ -86,6 +86,7 @@ public class PrezzoImpl implements IPrezzoServices{
 		
 		return prezzoR.save(pr).getId();
 	}
+	
 	private Boolean searchSupporto(List<Prezzo> prezzi, Supporto sup) {
 	    return prezzi.stream()
 	                 .anyMatch(p -> p.getSupporto() == sup);

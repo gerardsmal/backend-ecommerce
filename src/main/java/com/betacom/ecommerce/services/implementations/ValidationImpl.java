@@ -52,7 +52,7 @@ public class ValidationImpl implements IValidationServices{
 	}
 	@Override
 	public void checkNotNull(Object value, String messageKey) throws Exception {
-		Objects.requireNonNull(value, getMessaggio(messageKey));
+		Objects.requireNonNull(value,() -> getMessaggio(messageKey));
 	}
 	
 	/*
