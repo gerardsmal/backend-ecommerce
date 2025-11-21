@@ -74,14 +74,17 @@ public class UploadImpl implements IUploadServices{
             Files.copy(file.getInputStream(), destinationFile, StandardCopyOption.REPLACE_EXISTING);
             Prodotto prod = prodR.findById(id)
             		.orElseThrow(() -> new Exception(validS.getMessaggio("prod_ntfnd")));
+            
+            Optional.ofNullable(prod.getImage())
+            .ifPresent(imageName -> removeImage(imageName));
+
             prod.setImage(uniqueName);
             prodR.save(prod);
             
         } catch (IOException e) {
             throw new RuntimeException(validS.getMessaggio("upload_save_error"));
         }
-
-        // Ritorno solo il nome per costruire l’URL	        
+    
         return uniqueName;
 	}
 
