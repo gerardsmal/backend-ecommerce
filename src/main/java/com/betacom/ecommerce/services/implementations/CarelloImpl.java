@@ -1,13 +1,11 @@
 package com.betacom.ecommerce.services.implementations;
 
 import java.time.LocalDate;
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.betacom.ecommerce.dto.input.CarelloReq;
 import com.betacom.ecommerce.dto.input.PickItemReq;
 import com.betacom.ecommerce.dto.input.RigaCarelloReq;
 import com.betacom.ecommerce.enums.StatoCarello;
@@ -23,8 +21,8 @@ import com.betacom.ecommerce.repositories.ICarelloRepository;
 import com.betacom.ecommerce.repositories.IProdottoRepository;
 import com.betacom.ecommerce.repositories.IRigaCarelloRepository;
 import com.betacom.ecommerce.services.interfaces.ICarelloServices;
-import com.betacom.ecommerce.services.interfaces.IValidationServices;
 import com.betacom.ecommerce.services.interfaces.IStockServices;
+import com.betacom.ecommerce.services.interfaces.IValidationServices;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -45,7 +43,6 @@ public class CarelloImpl implements ICarelloServices{
 			IProdottoRepository prodR,
 			IRigaCarelloRepository rigaR,
 			IStockServices stockS) {
-		super();
 		this.carR = carR;
 		this.accountR = accountR;
 		this.validS = validS;
@@ -56,31 +53,35 @@ public class CarelloImpl implements ICarelloServices{
 	
 	@Transactional (rollbackFor = Exception.class)
 	@Override
-	public void create(CarelloReq req) throws Exception {
+	public Integer create(RigaCarelloReq req) throws Exception {
 		log.debug("create:" + req);
 		Account ac = accountR.findById(req.getAccountID())
 				.orElseThrow(() -> new Exception(validS.getMessaggio("account_ntfnd")));
-		
-		Optional.ofNullable(ac.getCarello())
-			.ifPresent(c -> {
-				throw new EcommerceException(validS.getMessaggio("carello_exist"));
-			});
-		
+				
 		Carello car = new Carello();
 		car.setAccount(ac);
 		car.setDataCreazione(LocalDate.now());
 		car.setStato(StatoCarello.valueOf("carello"));
 		
-		carR.save(car);
+		return carR.save(car).getId();
 	}
 	
 	@Transactional (rollbackFor = Exception.class)	
 	@Override
 	public void addRiga(RigaCarelloReq req) throws Exception {
 		log.debug("addRiga:" + req);
-		Carello carello = carR.findById(req.getIdCarello())
-				.orElseThrow(() -> new Exception(validS.getMessaggio("carello_ntfnd")));
-	
+		Account acc = accountR.findById(req.getAccountID())
+				.orElseThrow(() -> new Exception(validS.getMessaggio("account_ntfnd")));
+		
+		Carello carello =  null;
+		if (acc.getCarello() == null) {
+			int idCar = create(req);
+			carello = carR.findById(idCar)
+					.orElseThrow(() -> new Exception(validS.getMessaggio("carello_ntfnd")));
+		} else {
+			carello = acc.getCarello();
+		}
+			
 		Optional.ofNullable(carello.getStato())
 			.filter(stato -> stato == StatoCarello.valueOf("ordine"))
 			.ifPresent(stato -> {
@@ -122,9 +123,9 @@ public class CarelloImpl implements ICarelloServices{
 	
 	@Transactional (rollbackFor = Exception.class)	
 	@Override
-	public void removeRiga(RigaCarelloReq req) throws Exception {
-		log.debug("removeRiga:" + req);
-		RigaCarello riga =  rigaR.findById(req.getId())
+	public void removeRiga(Integer id) throws Exception {
+		log.debug("removeRiga:" + id);
+		RigaCarello riga =  rigaR.findById(id)
 				.orElseThrow(() -> new Exception(validS.getMessaggio("carello_elem_ko")));
 
 		Optional.ofNullable(riga.getCarello().getStato())

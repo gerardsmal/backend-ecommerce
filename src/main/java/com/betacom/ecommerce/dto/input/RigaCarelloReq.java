@@ -9,7 +9,7 @@ import lombok.ToString;
 @ToString
 public class RigaCarelloReq {
 	private Integer id;
-	private Integer idCarello;
+	private Integer accountID;
 	private Integer IdProdotto;
 	private String supporto;
 	private Integer quantita;

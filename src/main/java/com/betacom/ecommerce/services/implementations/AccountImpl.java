@@ -255,6 +255,7 @@ public class AccountImpl implements IAccountServices{
 							.id(riga.getId())
 							.dataCreazione(riga.getDataCreazione())
 							.artist(riga.getProdotto().getArtista().getNome())
+							.productID(riga.getProdotto().getId())
 							.productName(riga.getProdotto().getDescrizione())
 							.genere(riga.getProdotto().getFamiglia().getDescrizione())
 							.prezzo(prezzo.getPrezzo())

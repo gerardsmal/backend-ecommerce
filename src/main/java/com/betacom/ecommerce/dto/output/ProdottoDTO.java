@@ -16,5 +16,6 @@ public class ProdottoDTO {
 	private String image;
 	private FamigliaDTO famiglia;
 	private ArtistaDTO artista;
+	private String supports;
 	private List<PrezzoDTO> prezzo;
 }

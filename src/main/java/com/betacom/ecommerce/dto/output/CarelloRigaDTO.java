@@ -12,6 +12,7 @@ import lombok.Setter;
 public class CarelloRigaDTO {
 	private Integer id;
 	private LocalDate dataCreazione;
+	private Integer productID;
 	private String productName;
 	private String artist;
 	private String genere;

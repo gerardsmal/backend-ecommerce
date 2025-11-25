@@ -56,8 +56,10 @@ public class UploadImpl implements IUploadServices{
 		Assert.isTrue(!file.isEmpty(),() -> validS.getMessaggio("upload_empty"));
 		
         // Estensione (es. ".png")
-        String originalName = file.getOriginalFilename();
+        String original = file.getOriginalFilename();
         String extension = "";
+        String originalName = original.trim().replaceAll("\\s+", "_");
+        
         log.debug("originalName:" + originalName);
         
         extension = Optional.ofNullable(originalName)         // search extension file 
@@ -94,9 +96,10 @@ public class UploadImpl implements IUploadServices{
 		Path updalofPath = Paths.get("uploads").toAbsolutePath().normalize();
 		Path filpath = updalofPath.resolve(filename);
 		if (Files.exists(filpath)){
-			log.debug("Remove image");
+			log.debug("Remove image:" + filpath);
 			try {
 				Files.delete(filpath);
+				log.debug("Images deleted..");
 			} catch (Exception e) {
 				throw new EcommerceException(e.getMessage());
 			}

@@ -8,6 +8,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +22,7 @@ import com.betacom.ecommerce.dto.output.ProdottoDTO;
 import com.betacom.ecommerce.exception.EcommerceException;
 import com.betacom.ecommerce.models.Artist;
 import com.betacom.ecommerce.models.Famiglia;
+import com.betacom.ecommerce.models.Prezzo;
 import com.betacom.ecommerce.models.Prodotto;
 import com.betacom.ecommerce.repositories.IArtistRepository;
 import com.betacom.ecommerce.repositories.IFamigliaRepository;
@@ -149,6 +151,7 @@ public class ProdottoImpl implements IProdottoServices{
 								.famiglia(buildFamigliaDTOList(p.getArtista().getFamiglia()))
 								.build()
 								)
+						.supports(buildSupports(p.getPrezzo()))
 						.prezzo(buildPrezzoDTOList(p.getPrezzo()))
 						.build()
 						)
@@ -183,7 +186,11 @@ public class ProdottoImpl implements IProdottoServices{
 	}
 	
 	
-	
+	private String buildSupports(List<Prezzo> lP) {
+		return lP.stream()
+				.map(pr -> pr.getSupporto().toString() )
+				.collect(Collectors.joining(", "));
+	}
 	/*
 	 * control family validity
 	 * family must be compatible with original artist family
