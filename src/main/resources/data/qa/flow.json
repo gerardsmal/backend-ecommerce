@@ -1,0 +1,208 @@
+[
+  {
+    "id": "root-main",
+    "question": "Richiesta di assistenza generale",
+    "answer": "Ciao! Posso aiutarti con account, ordini, pagamenti, resi, assistenza o catalogo musica. Scrivi la tua domanda in linguaggio naturale oppure scegli uno dei temi: account, ordini, pagamenti, resi, musica, assistenza.",
+    "nextSteps": [
+      {
+        "id": "flow-account-root",
+        "condition": "account registrazione login username password dati personali cancellare account",
+        "label": "Ho bisogno di aiuto con l'account (registrazione, login, dati personali, cancellazione)."
+      },
+      {
+        "id": "flow-order-root",
+        "condition": "ordini ordine storico recuperare ordini annullare ordine acquisto",
+        "label": "Ho bisogno di aiuto con gli ordini (storico, annullamento, dettagli)."
+      },
+      {
+        "id": "flow-payment-root",
+        "condition": "pagamento pagamenti carta paypal modalità di pagamento",
+        "label": "Ho bisogno di aiuto con i pagamenti (metodi, momento del pagamento, sicurezza)."
+      },
+      {
+        "id": "flow-return-root",
+        "condition": "reso restituzione prodotto sbagliato errore acquisto",
+        "label": "Ho bisogno di aiuto con il reso di un prodotto."
+      },
+      {
+        "id": "flow-music-root",
+        "condition": "musica generi musicali catalogo dischi cd vinili",
+        "label": "Voglio informazioni sul catalogo musicale."
+      },
+      {
+        "id": "flow-support-root",
+        "condition": "assistenza supporto contattare orari",
+        "label": "Voglio informazioni sull'assistenza."
+      }
+    ]
+  },
+  {
+    "id": "flow-account-root",
+    "question": "Assistenza sull'account",
+    "answer": "Posso aiutarti con registrazione, dati necessari, username univoco e cancellazione dell'account. Di cosa hai bisogno?",
+    "nextSteps": [
+      {
+        "id": "flow-account-registration",
+        "condition": "registrarmi registrazione nuovo utente creare account iscrizione",
+        "label": "Voglio sapere come registrarmi e quali dati servono."
+      },
+      {
+        "id": "flow-account-username",
+        "condition": "username nome utente univoco già usato",
+        "label": "Voglio informazioni sullo username."
+      },
+      {
+        "id": "flow-account-delete",
+        "condition": "cancellare account eliminare account rimuovere account chiudere account",
+        "label": "Voglio cancellare il mio account."
+      }
+    ]
+  },
+  {
+    "id": "flow-account-registration",
+    "question": "Informazioni sulla registrazione",
+    "answer": "L'accesso al sito non richiede obbligatoriamente la registrazione: ti verrà chiesta al momento dell'acquisto. La registrazione si fa direttamente sul sito durante il processo di acquisto. Per registrarti servono nome, cognome, un indirizzo e-mail valido, il sesso, eventualmente il numero di telefono e l'indirizzo postale. Inoltre devi scegliere uno username e una password.",
+    "nextSteps": []
+  },
+  {
+    "id": "flow-account-username",
+    "question": "Informazioni sullo username",
+    "answer": "Lo username che scegli è univoco. Se il nome utente è già in uso, il sistema ti chiederà di sceglierne un altro.",
+    "nextSteps": []
+  },
+  {
+    "id": "flow-account-delete",
+    "question": "Cancellazione dell'account",
+    "answer": "Puoi cancellare il tuo account in qualsiasi momento. Dopo la cancellazione non potrai più accedere all'area personale con le stesse credenziali.",
+    "nextSteps": []
+  },
+  {
+    "id": "flow-order-root",
+    "question": "Assistenza sugli ordini",
+    "answer": "Posso aiutarti a recuperare i tuoi ordini o a capire quando puoi cancellare un ordine. Cosa ti serve?",
+    "nextSteps": [
+      {
+        "id": "flow-order-history",
+        "condition": "recuperare ordini vedere ordini storico ordini ordini precedenti",
+        "label": "Voglio recuperare/vedere i miei ordini."
+      },
+      {
+        "id": "flow-order-cancel",
+        "condition": "cancellare ordine annullare ordine eliminare ordine",
+        "label": "Voglio cancellare un ordine."
+      }
+    ]
+  },
+  {
+    "id": "flow-order-history",
+    "question": "Recupero degli ordini",
+    "answer": "Per recuperare i tuoi ordini devi essere loggato. Una volta effettuato l'accesso, nell'area personale puoi consultare lo storico degli ordini effettuati.",
+    "nextSteps": []
+  },
+  {
+    "id": "flow-order-cancel",
+    "question": "Cancellazione di un ordine",
+    "answer": "Un ordine può essere cancellato finché il pagamento non è stato effettuato. Dopo il pagamento non è più possibile annullarlo, ma puoi eventualmente richiedere un reso secondo le condizioni previste.",
+    "nextSteps": [
+      {
+        "id": "flow-return-root",
+        "condition": "reso restituzione prodotto dopo pagamento",
+        "label": "Voglio informazioni sul reso dopo il pagamento."
+      }
+    ]
+  },
+  {
+    "id": "flow-payment-root",
+    "question": "Assistenza sui pagamenti",
+    "answer": "Posso spiegarti quali metodi di pagamento sono accettati, quando viene richiesto il pagamento e come gestiamo la sicurezza dei dati. Cosa vuoi sapere?",
+    "nextSteps": [
+      {
+        "id": "flow-payment-methods",
+        "condition": "tipi di pagamento metodi pagamento carta paypal",
+        "label": "Voglio sapere quali metodi di pagamento sono accettati."
+      },
+      {
+        "id": "flow-payment-when",
+        "condition": "quando si paga momento pagamento fase pagamento",
+        "label": "Voglio sapere quando devo inserire il pagamento."
+      },
+      {
+        "id": "flow-payment-security",
+        "condition": "salvate dati pagamento memorizzazione carta sicurezza",
+        "label": "Voglio sapere se i dati di pagamento vengono memorizzati."
+      }
+    ]
+  },
+  {
+    "id": "flow-payment-methods",
+    "question": "Metodi di pagamento accettati",
+    "answer": "Accettiamo pagamenti tramite PayPal e carta bancaria.",
+    "nextSteps": []
+  },
+  {
+    "id": "flow-payment-when",
+    "question": "Momento del pagamento",
+    "answer": "La modalità di pagamento viene specificata al momento dell'acquisto, durante la procedura di checkout.",
+    "nextSteps": []
+  },
+  {
+    "id": "flow-payment-security",
+    "question": "Sicurezza e memorizzazione dei pagamenti",
+    "answer": "Per la tua sicurezza non memorizziamo i dati di pagamento: non salviamo i dati della carta né le altre modalità utilizzate.",
+    "nextSteps": []
+  },
+  {
+    "id": "flow-return-root",
+    "question": "Assistenza sui resi",
+    "answer": "Posso indicarti entro quando puoi fare il reso e cosa succede dopo il primo mese. Vuoi una spiegazione generale o hai un caso specifico?",
+    "nextSteps": [
+      {
+        "id": "flow-return-rules",
+        "condition": "come funziona il reso regole reso entro quanto tempo",
+        "label": "Voglio sapere come funziona il reso in generale."
+      }
+    ]
+  },
+  {
+    "id": "flow-return-rules",
+    "question": "Regole per il reso",
+    "answer": "Il reso è gratuito entro un mese dall'acquisto. Dopo un mese è necessario contattare l'assistenza per valutare il singolo caso.",
+    "nextSteps": []
+  },
+  {
+    "id": "flow-music-root",
+    "question": "Informazioni sul catalogo musicale",
+    "answer": "Sul sito puoi trovare tutti i generi musicali. Posso aiutarti a capire che tipo di musica è disponibile o come cercare ciò che ti interessa.",
+    "nextSteps": [
+      {
+        "id": "flow-music-types",
+        "condition": "tipi di musica generi musicali che musica avete",
+        "label": "Voglio sapere che tipo di musica è disponibile."
+      }
+    ]
+  },
+  {
+    "id": "flow-music-types",
+    "question": "Tipi di musica disponibili",
+    "answer": "Sono disponibili tutti i generi musicali. Puoi cercare per artista, album, genere o parola chiave direttamente dal catalogo.",
+    "nextSteps": []
+  },
+  {
+    "id": "flow-support-root",
+    "question": "Informazioni sull'assistenza",
+    "answer": "Posso dirti quando l'assistenza è disponibile e a chi rivolgerti in caso di problemi.",
+    "nextSteps": [
+      {
+        "id": "flow-support-hours",
+        "condition": "orari assistenza orari supporto quando aperta",
+        "label": "Voglio sapere gli orari dell'assistenza."
+      }
+    ]
+  },
+  {
+    "id": "flow-support-hours",
+    "question": "Orari dell'assistenza",
+    "answer": "L’assistenza è disponibile tutti i giorni dalle 8:00 alle 18:00, esclusa la domenica.",
+    "nextSteps": []
+  }
+]
