@@ -131,6 +131,7 @@ public class AccountImpl implements IAccountServices{
 				if (accR.existsByUserName(req.getUserName())) {
 					throw new RuntimeException(validS.getMessaggio("account_username_ko"));				
 				}
+				acc.setUserName(req.getUserName());
 			}
 			
 		});		
@@ -197,6 +198,9 @@ public class AccountImpl implements IAccountServices{
 		
 		return SigninDTO.builder()
 				.userID(user.getId())
+				.carrelloSize(user.getCarello() == null || user.getCarello().getRigaCarello() == null 
+						? 0
+						: user.getCarello().getRigaCarello().size())
 				.userName(user.getNome() + " " + user.getCognome())
 				.role(user.getRole().toString())
 				.build();
@@ -241,6 +245,32 @@ public class AccountImpl implements IAccountServices{
 					
 	}
 	
+	@Override
+	public AccountDTO getById(Integer id) throws Exception {
+		log.debug("getById: {}", id);
+		
+		Account a = accR.findById(id)
+				.orElseThrow(() -> new Exception(validS.getMessaggio("account_ntfnd")));
+		
+		return AccountDTO.builder()
+				.id(a.getId())
+				.nome(a.getNome())
+				.cognome(a.getCognome())
+				.sesso(a.getSesso() ? "M" :"F" )
+				.telefono(a.getTelefono())
+				.via(a.getVia())
+				.commune(a.getCommune())
+				.cap(a.getCap())
+				.email(a.getEmail())
+				.status(a.getStatus() ? "Attivo" : "Inattivo")
+				.dataCreazione(a.getDataCreazione())
+				.userName(a.getUserName())
+				.role(a.getRole().toString())
+				.carello(buildCarelloDTO(a))
+				.build();
+	}
+
+	
 	private CarelloDTO buildCarelloDTO(Account account){
 		if (account.getCarello() == null)
 			return null;
@@ -275,6 +305,7 @@ public class AccountImpl implements IAccountServices{
 			return null;
 		}	
 	}
+
 
 
 

@@ -111,4 +111,18 @@ public class AccountController {
 		}
 		return ResponseEntity.status(status).body(r);
 	}
+	
+	@GetMapping("/getAccount")
+	public ResponseEntity<Object> getAccount( @RequestParam (required = false) Integer id){	
+		
+		HttpStatus status = HttpStatus.OK;
+		try {		
+			return ResponseEntity.status(status).body(accS.getById(id));
+		} catch (Exception e) {
+			Response r = new Response();
+			r.setMsg(e.getMessage());
+			status = HttpStatus.BAD_REQUEST;
+			return ResponseEntity.status(status).body(r);
+		}
+	}
 }

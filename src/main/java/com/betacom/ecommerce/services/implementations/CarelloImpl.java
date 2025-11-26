@@ -68,18 +68,20 @@ public class CarelloImpl implements ICarelloServices{
 	
 	@Transactional (rollbackFor = Exception.class)	
 	@Override
-	public void addRiga(RigaCarelloReq req) throws Exception {
+	public Integer addRiga(RigaCarelloReq req) throws Exception {
 		log.debug("addRiga:" + req);
 		Account acc = accountR.findById(req.getAccountID())
 				.orElseThrow(() -> new Exception(validS.getMessaggio("account_ntfnd")));
 		
 		Carello carello =  null;
+		int size = 0;
 		if (acc.getCarello() == null) {
 			int idCar = create(req);
 			carello = carR.findById(idCar)
 					.orElseThrow(() -> new Exception(validS.getMessaggio("carello_ntfnd")));
 		} else {
 			carello = acc.getCarello();
+			size = acc.getCarello().getRigaCarello().size();
 		}
 			
 		Optional.ofNullable(carello.getStato())
@@ -113,12 +115,20 @@ public class CarelloImpl implements ICarelloServices{
 					.prezzoId(prezzo.getId())
 					.numeroItems(req.getQuantita())
 					.build()
-					);
-			
+					);		
 			log.debug("Stock updated...");			
 		}
 		rigaR.save(riga);
 		
+		return ++size;
+	}
+	
+	public int getRigaSize(int id) throws Exception{
+		Account ac = accountR.findById(id)			
+				.orElseThrow(() -> new Exception(validS.getMessaggio("account_ntfnd")));
+		
+		log.debug("size:" +  ac.getCarello().getRigaCarello().size());
+		return ac.getCarello().getRigaCarello().size();
 	}
 	
 	@Transactional (rollbackFor = Exception.class)	

@@ -25,4 +25,6 @@ public interface IAccountServices {
 			String status,
 			String role)
 			throws Exception;
+	
+	AccountDTO getById(Integer id) throws Exception;
 }

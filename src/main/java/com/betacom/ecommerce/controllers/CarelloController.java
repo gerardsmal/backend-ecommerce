@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.betacom.ecommerce.dto.input.RigaCarelloReq;
 import com.betacom.ecommerce.response.Response;
+import com.betacom.ecommerce.response.ResponseInt;
 import com.betacom.ecommerce.services.interfaces.ICarelloServices;
 import com.betacom.ecommerce.services.interfaces.IValidationServices;
 
@@ -40,17 +41,21 @@ public class CarelloController {
 //	}
 	
 	@PostMapping("/addRiga")
-	public ResponseEntity<Response> addRiga(@RequestBody (required = true) RigaCarelloReq req) {
-		Response r = new Response();
+	public ResponseEntity<Object> addRiga(@RequestBody (required = true) RigaCarelloReq req) {
+		
 		HttpStatus status = HttpStatus.OK;
 		try {
-			carS.addRiga(req);
-			r.setMsg(validS.getMessaggio("created"));
+			ResponseInt r = new ResponseInt();
+			r.setResult(carS.addRiga(req));
+			r.setMsg(validS.getMessaggio("carello_added"));
+			return ResponseEntity.status(status).body(r);	
 		} catch (Exception e) {
+			Response r = new Response();
 			r.setMsg(e.getMessage());
 			status = HttpStatus.BAD_REQUEST;
-		}
-		return ResponseEntity.status(status).body(r);	}
+			return ResponseEntity.status(status).body(r);		
+		}		
+	}
 	
 	@DeleteMapping("/deleteRiga/{id}")
 	public ResponseEntity<Response> deleteRiga(@PathVariable (required = true) Integer id) {
