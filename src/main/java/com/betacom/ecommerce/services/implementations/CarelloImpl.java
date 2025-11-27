@@ -123,13 +123,6 @@ public class CarelloImpl implements ICarelloServices{
 		return ++size;
 	}
 	
-	public int getRigaSize(int id) throws Exception{
-		Account ac = accountR.findById(id)			
-				.orElseThrow(() -> new Exception(validS.getMessaggio("account_ntfnd")));
-		
-		log.debug("size:" +  ac.getCarello().getRigaCarello().size());
-		return ac.getCarello().getRigaCarello().size();
-	}
 	
 	@Transactional (rollbackFor = Exception.class)	
 	@Override
