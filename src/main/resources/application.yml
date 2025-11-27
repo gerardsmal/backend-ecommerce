@@ -1,0 +1,56 @@
+spring:
+  application:
+    name: ecommerce
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/ecommerce
+    username: ${db_user}
+    password: ${db_pwd}
+
+  jpa:
+    show-sql: false
+    properties:
+      hibernate:
+        format_sql: true
+      jakarta:
+        persistence:
+          schema-generation:
+            scripts:
+              action: drop-and-create
+              create-target: define.sql
+              drop-target: drop.sql
+            # Append disattivato
+      hibernate.hbm2ddl.schema-generation.script.append: false
+
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+logging:
+  level:
+    root: info
+    com:
+      betacom: debug
+    org:
+      hibernate:
+        type:
+          descriptor:
+            sql:
+              BasicBinder: TRACE
+        # SQL: DEBUG  (se vuoi scommentarlo)
+  file:
+    name: ./ecommerce.log
+
+app:
+  upload:
+    dir: uploads
+
+lang: IT
+
+
+chatbot:
+  faq-file: classpath:data/qa/faq_chatbot.json
+  flow-file: classpath:data/qa/flow.json
+
+
