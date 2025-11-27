@@ -10,6 +10,7 @@ import lombok.Setter;
 public class SigninDTO {
 
 	private Integer userID;
+	private Integer carrelloSize;
 	private String userName;
 	private String role;
 }

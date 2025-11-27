@@ -23,6 +23,7 @@ import com.betacom.ecommerce.models.Prezzo;
 import com.betacom.ecommerce.models.RigaCarello;
 import com.betacom.ecommerce.repositories.IAccountRepository;
 import com.betacom.ecommerce.services.interfaces.IAccountServices;
+import com.betacom.ecommerce.services.interfaces.IUploadServices;
 import com.betacom.ecommerce.services.interfaces.IValidationServices;
 
 import lombok.extern.slf4j.Slf4j;
@@ -34,6 +35,7 @@ public class AccountImpl implements IAccountServices{
 	private IAccountRepository accR;
 	private IValidationServices  validS;
 	private PasswordEncoder    encoder;
+	private IUploadServices  uploadS;
 
 	private static String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
 	private static String capRegex = "^[0-9]{5}$";
@@ -41,10 +43,12 @@ public class AccountImpl implements IAccountServices{
 	
 	public AccountImpl(IAccountRepository accR, 
 			IValidationServices validS,
-			PasswordEncoder  encoder) {
+			PasswordEncoder  encoder,
+			IUploadServices  uploadS) {
 		this.accR = accR;
 		this.validS = validS;
 		this.encoder = encoder;
+		this.uploadS = uploadS;
 	}
 
 	@Override
@@ -131,6 +135,7 @@ public class AccountImpl implements IAccountServices{
 				if (accR.existsByUserName(req.getUserName())) {
 					throw new RuntimeException(validS.getMessaggio("account_username_ko"));				
 				}
+				acc.setUserName(req.getUserName());
 			}
 			
 		});		
@@ -197,6 +202,9 @@ public class AccountImpl implements IAccountServices{
 		
 		return SigninDTO.builder()
 				.userID(user.getId())
+				.carrelloSize(user.getCarello() == null || user.getCarello().getRigaCarello() == null 
+						? 0
+						: user.getCarello().getRigaCarello().size())
 				.userName(user.getNome() + " " + user.getCognome())
 				.role(user.getRole().toString())
 				.build();
@@ -241,6 +249,32 @@ public class AccountImpl implements IAccountServices{
 					
 	}
 	
+	@Override
+	public AccountDTO getById(Integer id) throws Exception {
+		log.debug("getById: {}", id);
+		
+		Account a = accR.findById(id)
+				.orElseThrow(() -> new Exception(validS.getMessaggio("account_ntfnd")));
+		
+		return AccountDTO.builder()
+				.id(a.getId())
+				.nome(a.getNome())
+				.cognome(a.getCognome())
+				.sesso(a.getSesso() ? "M" :"F" )
+				.telefono(a.getTelefono())
+				.via(a.getVia())
+				.commune(a.getCommune())
+				.cap(a.getCap())
+				.email(a.getEmail())
+				.status(a.getStatus() ? "Attivo" : "Inattivo")
+				.dataCreazione(a.getDataCreazione())
+				.userName(a.getUserName())
+				.role(a.getRole().toString())
+				.carello(buildCarelloDTO(a))
+				.build();
+	}
+
+	
 	private CarelloDTO buildCarelloDTO(Account account){
 		if (account.getCarello() == null)
 			return null;
@@ -257,6 +291,7 @@ public class AccountImpl implements IAccountServices{
 							.artist(riga.getProdotto().getArtista().getNome())
 							.productID(riga.getProdotto().getId())
 							.productName(riga.getProdotto().getDescrizione())
+							.image(riga.getProdotto().getImage() == null ? null : uploadS.buildUrl(riga.getProdotto().getImage()))
 							.genere(riga.getProdotto().getFamiglia().getDescrizione())
 							.prezzo(prezzo.getPrezzo())
 							.supporto(prezzo.getSupporto().toString())
@@ -275,6 +310,7 @@ public class AccountImpl implements IAccountServices{
 			return null;
 		}	
 	}
+
 
 
 
