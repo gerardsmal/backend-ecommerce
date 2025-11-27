@@ -14,6 +14,7 @@ public class CarelloRigaDTO {
 	private LocalDate dataCreazione;
 	private Integer productID;
 	private String productName;
+	private String image;
 	private String artist;
 	private String genere;
 	private String supporto;

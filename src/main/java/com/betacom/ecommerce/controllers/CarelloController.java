@@ -26,19 +26,6 @@ public class CarelloController {
 		this.validS = validS;
 	}
 
-//	@PostMapping("/create")
-//	public ResponseEntity<Response> create(@RequestBody (required = true) CarelloReq req) {
-//		Response r = new Response();
-//		HttpStatus status = HttpStatus.OK;
-//		try {
-//			carS.create(req);
-//			r.setMsg(validS.getMessaggio("created"));
-//		} catch (Exception e) {
-//			r.setMsg(e.getMessage());
-//			status = HttpStatus.BAD_REQUEST;
-//		}
-//		return ResponseEntity.status(status).body(r);
-//	}
 	
 	@PostMapping("/addRiga")
 	public ResponseEntity<Object> addRiga(@RequestBody (required = true) RigaCarelloReq req) {

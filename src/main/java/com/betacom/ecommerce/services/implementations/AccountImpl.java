@@ -23,6 +23,7 @@ import com.betacom.ecommerce.models.Prezzo;
 import com.betacom.ecommerce.models.RigaCarello;
 import com.betacom.ecommerce.repositories.IAccountRepository;
 import com.betacom.ecommerce.services.interfaces.IAccountServices;
+import com.betacom.ecommerce.services.interfaces.IUploadServices;
 import com.betacom.ecommerce.services.interfaces.IValidationServices;
 
 import lombok.extern.slf4j.Slf4j;
@@ -34,6 +35,7 @@ public class AccountImpl implements IAccountServices{
 	private IAccountRepository accR;
 	private IValidationServices  validS;
 	private PasswordEncoder    encoder;
+	private IUploadServices  uploadS;
 
 	private static String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
 	private static String capRegex = "^[0-9]{5}$";
@@ -41,10 +43,12 @@ public class AccountImpl implements IAccountServices{
 	
 	public AccountImpl(IAccountRepository accR, 
 			IValidationServices validS,
-			PasswordEncoder  encoder) {
+			PasswordEncoder  encoder,
+			IUploadServices  uploadS) {
 		this.accR = accR;
 		this.validS = validS;
 		this.encoder = encoder;
+		this.uploadS = uploadS;
 	}
 
 	@Override
@@ -287,6 +291,7 @@ public class AccountImpl implements IAccountServices{
 							.artist(riga.getProdotto().getArtista().getNome())
 							.productID(riga.getProdotto().getId())
 							.productName(riga.getProdotto().getDescrizione())
+							.image(riga.getProdotto().getImage() == null ? null : uploadS.buildUrl(riga.getProdotto().getImage()))
 							.genere(riga.getProdotto().getFamiglia().getDescrizione())
 							.prezzo(prezzo.getPrezzo())
 							.supporto(prezzo.getSupporto().toString())
