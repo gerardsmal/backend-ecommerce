@@ -1,9 +1,6 @@
 package com.betacom.ecommerce.models;
 
-import java.time.LocalDate;
 import java.util.List;
-
-import com.betacom.ecommerce.enums.StatusPagamento;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -19,43 +16,50 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
-@Getter
 @Setter
+@Getter
 @Entity
-@Table(name="ordini")
-public class Order {
+@Table (name="anagrafica_spedizione")
+public class Spedizione {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
-	
-	@Column(name="data_ordine")
-	private LocalDate dataOrdine;
 
-	@Column(name="data_invio")
-	private LocalDate dataInvio;
+	@Column (name="nome",
+			  nullable = false,
+			  length = 100)
+	private String nome;
+	
+	@Column (name="cognome",
+			  nullable = false,
+			  length = 100)
+	private String cognome;
 
+	@Column (name="via",
+			  nullable = false,
+			  length = 100)
+	private String via;
 	
-	@Column (name="stato_pagamenti")
-	private StatusPagamento statusPagamento;
-	
-	@Column (name="totale_ordine")
-	private Double totale;
-	
+	@Column (name="commune",
+			  nullable = false,
+			  length = 100)
+	private String commune;
+
+	@Column (name="cap",
+			  nullable = false,
+			  length = 5)
+	private String cap;
+
 	@ManyToOne
-	@JoinColumn (name="id_spedizione")
-	private Spedizione spedizione;
-	
-
-	
-	@ManyToOne
-	@JoinColumn (name="id_account")
+	@JoinColumn (name ="id_account")
 	private Account account;
-	
+
 	@OneToMany(
-			mappedBy = "order",
+			mappedBy = "spedizione",
 			cascade = CascadeType.REMOVE, orphanRemoval = true,
 			fetch = FetchType.EAGER
 			)
-	private List<OrderItems> orderItems;
+	private List<Order> order;
+	
 }

@@ -16,6 +16,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
@@ -99,6 +100,12 @@ public class Account {
 			fetch = FetchType.EAGER
 			)
 	private List<Order> oders; 
+	
+	@OneToMany(
+			mappedBy = "account",
+			fetch = FetchType.EAGER
+			)
+	private List<Spedizione> spedizione; 
 	
 	
 	

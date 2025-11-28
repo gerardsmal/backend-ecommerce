@@ -137,7 +137,7 @@ public class CarelloImpl implements ICarelloServices{
 				throw new EcommerceException(validS.getMessaggio("carello_not_available"));
 			});
 
-
+		
 		
 		Prezzo prezzo = validS.searchSupporto(riga.getProdotto().getPrezzo(), riga.getSupporto());
 
@@ -156,6 +156,40 @@ public class CarelloImpl implements ICarelloServices{
 		
 	}
 	
+	@Transactional (rollbackFor = Exception.class)	
+	@Override
+	public void updateQta(RigaCarelloReq req) throws Exception {
+		log.debug("updateQta:" + req);
+		RigaCarello riga =  rigaR.findById(req.getId())
+				.orElseThrow(() -> new Exception(validS.getMessaggio("carello_elem_ko")));
+		
+		Optional.ofNullable(req.getQuantita())
+		.filter(q -> q > 0)
+		.orElseThrow(() -> new Exception(validS.getMessaggio("carello_quantita_ko")));
+			
+		if (riga.getQuantita() != req.getQuantita()) {
+			riga = adjustStock(riga, req.getQuantita());
+			riga.setQuantita(req.getQuantita());
+			rigaR.save(riga);					
+		}		
+	}
+
+	private RigaCarello adjustStock(RigaCarello riga, int qta ) throws Exception{
+		int delta = qta - riga.getQuantita();
+		
+		Prezzo prezzo = validS.searchSupporto(riga.getProdotto().getPrezzo(), riga.getSupporto());
+		
+		if (prezzo.getStock() != null ) {
+			stockS.pickItem(PickItemReq.builder()
+					.prezzoId(prezzo.getId())
+					.numeroItems(delta)
+					.build()
+					);		
+			log.debug("Stock updated...");			
+		}
+		return riga;
+	}
+	
 	/*
 	 * Questo metodo transforma la string supporto in enum
 	 */
@@ -168,5 +202,6 @@ public class CarelloImpl implements ICarelloServices{
 		}
 		
 	}
+
 
 }
