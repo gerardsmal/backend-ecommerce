@@ -29,6 +29,13 @@ public class RigaCarello {
 	@Column(name="data_creazione")
 	private LocalDate dataCreazione;
 	
+	@Column (nullable = false)
+	@Check(constraints = "quantita > 0")
+	private Integer quantita;
+
+	private Supporto supporto;
+
+	
 	@ManyToOne
 	@JoinColumn (name="id_carello")	
 	private Carello carello;
@@ -37,8 +44,4 @@ public class RigaCarello {
 	@JoinColumn (name="id_prodotto")
 	private Prodotto prodotto;
 	
-	@Column (nullable = false)
-	@Check(constraints = "quantita > 0")
-	private Integer quantita;
-	private Supporto supporto;
 }

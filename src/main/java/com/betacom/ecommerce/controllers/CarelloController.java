@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -43,6 +44,23 @@ public class CarelloController {
 			return ResponseEntity.status(status).body(r);		
 		}		
 	}
+
+	
+	@PutMapping("/updateRiga")
+	public ResponseEntity<Object> updateRiga(@RequestBody (required = true) RigaCarelloReq req) {
+		Response r = new Response();
+		HttpStatus status = HttpStatus.OK;
+		try {
+			carS.updateQta(req);
+			r.setMsg(validS.getMessaggio("updated"));
+		} catch (Exception e) {
+			r.setMsg(e.getMessage());
+			status = HttpStatus.BAD_REQUEST;
+		}		
+		return ResponseEntity.status(status).body(r);	
+
+	}
+
 	
 	@DeleteMapping("/deleteRiga/{id}")
 	public ResponseEntity<Response> deleteRiga(@PathVariable (required = true) Integer id) {
