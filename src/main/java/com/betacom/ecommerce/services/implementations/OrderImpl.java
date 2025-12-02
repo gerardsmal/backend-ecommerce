@@ -114,9 +114,9 @@ public class OrderImpl implements IOrderServices{
 	
 	@Transactional (rollbackFor = Exception.class)	
 	@Override
-	public void remove(OrderReq req) throws Exception {
-		log.debug("Remove :" + req);
-		Order order = orderR.findById(req.getId())
+	public void remove(Integer id) throws Exception {
+		log.debug("Remove {}:" ,id);
+		Order order = orderR.findById(id)
 				.orElseThrow(() -> new Exception(validS.getMessaggio("order_ntfnd")));
 		
 		// control order status

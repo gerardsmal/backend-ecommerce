@@ -44,9 +44,7 @@ public class Order {
 	
 	@ManyToOne
 	@JoinColumn (name="id_spedizione")
-	private Spedizione spedizione;
-	
-
+	private Spedizione spedizione;	
 	
 	@ManyToOne
 	@JoinColumn (name="id_account")
