@@ -26,6 +26,8 @@ public class Spedizione {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 
+	private Boolean predefinito;
+	
 	@Column (name="nome",
 			  nullable = false,
 			  length = 100)
