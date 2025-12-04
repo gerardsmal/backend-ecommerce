@@ -43,8 +43,16 @@ public class Order {
 	private Double totale;
 	
 	@ManyToOne
+	@JoinColumn (name="id_modalita")
+	private ModalitaPagamento modalitaPagamento;	
+	
+	
+	
+	@ManyToOne
 	@JoinColumn (name="id_spedizione")
 	private Spedizione spedizione;	
+	
+	
 	
 	@ManyToOne
 	@JoinColumn (name="id_account")

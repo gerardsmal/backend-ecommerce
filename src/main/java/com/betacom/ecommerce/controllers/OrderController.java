@@ -106,6 +106,20 @@ public class OrderController {
 		}
 		return ResponseEntity.status(status).body(r);
 	}
+	
+	@GetMapping("/getSpedizione")
+	public ResponseEntity<Object> getAccount( @RequestParam (required = false) Integer id){	
+		
+		HttpStatus status = HttpStatus.OK;
+		try {		
+			return ResponseEntity.status(status).body(spedS.getById(id));
+		} catch (Exception e) {
+			Response r = new Response();
+			r.setMsg(e.getMessage());
+			status = HttpStatus.BAD_REQUEST;
+			return ResponseEntity.status(status).body(r);
+		}
+	}
 
 	
 	@PostMapping("/create")
