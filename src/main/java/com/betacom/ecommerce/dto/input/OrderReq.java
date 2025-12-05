@@ -10,5 +10,7 @@ import lombok.ToString;
 public class OrderReq {
 	private Integer id;
 	private Integer accountID;
+	private Integer spedizioneID;
+	private Integer modalitaID;
 
 }

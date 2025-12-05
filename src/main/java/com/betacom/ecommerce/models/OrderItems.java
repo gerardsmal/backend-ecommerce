@@ -33,6 +33,7 @@ public class OrderItems {
 	private String artist;
 	private String genere;
 	private Supporto supporto;
+	private String image;
 	
 	@Column(name="prezzo_unitatio")
 	private double prezzoUnit;
