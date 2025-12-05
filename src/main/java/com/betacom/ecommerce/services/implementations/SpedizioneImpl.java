@@ -156,9 +156,20 @@ public class SpedizioneImpl implements ISpedizioneServices{
 	}
 
 	@Override
-	public SpedizioneDTO getById(Integer accountID, Integer spedizioneID) throws Exception {
-		// TODO Auto-generated method stub
-		return null;
+	public SpedizioneDTO getById(Integer spedizioneID) throws Exception {
+		log.debug("getById: {}", spedizioneID);
+		Spedizione s = spedR.findById(spedizioneID)
+				.orElseThrow(() -> new Exception(validS.getMessaggio("spedizione_ntfnd")));
+		
+		return SpedizioneDTO.builder()
+				.isDefault(s.getPredefinito())
+				.id(s.getId())
+				.nome(s.getNome())
+				.cognome(s.getCognome())
+				.via(s.getVia())
+				.commune(s.getCommune())
+				.cap(s.getCap())
+				.build();
 	}
 
 }

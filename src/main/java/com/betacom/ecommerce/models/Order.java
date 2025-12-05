@@ -42,9 +42,21 @@ public class Order {
 	@Column (name="totale_ordine")
 	private Double totale;
 	
+	@Column (name="numero_ordine",
+			unique=true,
+			nullable = false)
+	private Long numeroOrdine;
+
+	@ManyToOne
+	@JoinColumn (name="id_modalita")
+	private ModalitaPagamento modalitaPagamento;	
+		
+	
 	@ManyToOne
 	@JoinColumn (name="id_spedizione")
 	private Spedizione spedizione;	
+	
+	
 	
 	@ManyToOne
 	@JoinColumn (name="id_account")

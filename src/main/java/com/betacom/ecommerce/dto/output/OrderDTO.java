@@ -16,5 +16,7 @@ public class OrderDTO {
 	private LocalDate dataInvio;
 	private String status;
 	private double prezzoTotale;
+	private SpedizioneDTO spedizione;
+	private ModalitaPagamentoDTO modalitaPagamento;
 	List<OrderItemDTO> riga;
 }

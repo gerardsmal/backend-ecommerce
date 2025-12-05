@@ -14,15 +14,20 @@ import com.betacom.ecommerce.enums.StatoCarello;
 import com.betacom.ecommerce.enums.StatusPagamento;
 import com.betacom.ecommerce.models.Account;
 import com.betacom.ecommerce.models.Carello;
+import com.betacom.ecommerce.models.ModalitaPagamento;
 import com.betacom.ecommerce.models.Order;
 import com.betacom.ecommerce.models.OrderItems;
 import com.betacom.ecommerce.models.Prezzo;
 import com.betacom.ecommerce.models.RigaCarello;
+import com.betacom.ecommerce.models.Spedizione;
 import com.betacom.ecommerce.repositories.IAccountRepository;
 import com.betacom.ecommerce.repositories.ICarelloRepository;
+import com.betacom.ecommerce.repositories.IModalidaPagamentoRepository;
 import com.betacom.ecommerce.repositories.IOrderItemsRepository;
 import com.betacom.ecommerce.repositories.IOrderRepository;
 import com.betacom.ecommerce.repositories.IRigaCarelloRepository;
+import com.betacom.ecommerce.repositories.ISpedizioneRepository;
+import com.betacom.ecommerce.services.interfaces.IOrderCounterServices;
 import com.betacom.ecommerce.services.interfaces.IOrderServices;
 import com.betacom.ecommerce.services.interfaces.IValidationServices;
 
@@ -32,25 +37,35 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 public class OrderImpl implements IOrderServices{
 
-	private IAccountRepository accountR;
-	private IOrderRepository   orderR;
-	private IValidationServices validS;
-	private IOrderItemsRepository itemR;
-	private ICarelloRepository    carelloR;
-	private IRigaCarelloRepository rigaCarelloR;
+	private final IAccountRepository accountR;
+	private final IOrderRepository   orderR;
+	private final IValidationServices validS;
+	private final IOrderItemsRepository itemR;
+	private final ICarelloRepository    carelloR;
+	private final IRigaCarelloRepository rigaCarelloR;
+	private final IOrderCounterServices  countS;
+	private final ISpedizioneRepository  spedR;
+	private final IModalidaPagamentoRepository  modR;
+	
 	
 	public OrderImpl(IAccountRepository accountR, 
 			IOrderRepository orderR, 
 			IValidationServices validS, 
 			IOrderItemsRepository itemR,
 			ICarelloRepository    carelloR,
-			IRigaCarelloRepository rigaCarelloR) {
+			IRigaCarelloRepository rigaCarelloR,
+			IOrderCounterServices  countS,
+			ISpedizioneRepository  spedR,
+			IModalidaPagamentoRepository  modR) {
 		this.accountR = accountR;
 		this.orderR = orderR;
 		this.validS = validS;
 		this.itemR = itemR;
 		this.carelloR = carelloR;
 		this.rigaCarelloR = rigaCarelloR;
+		this.countS = countS;
+		this.spedR = spedR;
+		this.modR = modR;
 	}
 	
 	@Transactional (rollbackFor = Exception.class)	
@@ -73,7 +88,19 @@ public class OrderImpl implements IOrderServices{
 			throw new Exception(validS.getMessaggio("order_status_invalid"));
 		}
 		
+		Spedizione spedi = spedR.findById(req.getSpedizioneID())
+				.orElseThrow(() -> new Exception(validS.getMessaggio("spedizione_ntfnd")));
+		
+		ModalitaPagamento modalita = modR.findById(req.getModalitaID())
+				.orElseThrow(() -> new Exception(validS.getMessaggio("modalita_ntfnd")));
+		
+		
 		order.setDataOrdine(LocalDate.now());
+		
+		order.setNumeroOrdine(0L);  // set numero provisorio 
+		order.setSpedizione(spedi);
+		order.setModalitaPagamento(modalita);
+		
 		order.setAccount(ac);
 		
 		Integer id =orderR.save(order).getId();		
@@ -99,6 +126,7 @@ public class OrderImpl implements IOrderServices{
 			Prezzo prezzo = validS.searchSupporto(riga.getProdotto().getPrezzo(), riga.getSupporto());
 			item.setPrezzoUnit(prezzo.getPrezzo());
 			item.setPrezzo(item.getPrezzoUnit() * riga.getQuantita());
+			item.setImage(riga.getProdotto().getImage());
 			item.setOrder(order);
 			totale = totale + item.getPrezzo();
 			itemR.save(item);	
@@ -144,6 +172,7 @@ public class OrderImpl implements IOrderServices{
 			throw new Exception(validS.getMessaggio("order_status_invalid"));
 		}
 		
+		order.setNumeroOrdine(countS.nextOrderNumber());
 		order.setDataInvio(LocalDate.now());
 		orderR.save(order);
 		

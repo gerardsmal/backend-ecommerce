@@ -13,6 +13,6 @@ public interface ISpedizioneServices {
 	void delete(Integer spedizioneID) throws Exception;
 	
 	List<SpedizioneDTO> list(Integer id) throws Exception;
-	SpedizioneDTO getById(Integer accountID, Integer spedizioneID) throws Exception;
+	SpedizioneDTO getById(Integer spedizioneID) throws Exception;
 
 }
