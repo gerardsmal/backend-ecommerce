@@ -1,6 +1,5 @@
 package com.betacom.ecommerce.controllers;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -9,7 +8,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.betacom.ecommerce.response.Response;
 import com.betacom.ecommerce.services.interfaces.IUploadServices;
@@ -33,10 +31,10 @@ public class UploadController {
 	}
 	 
 	@PostMapping(value = "/image", consumes = "multipart/form-data")
-	public ResponseEntity<Response> uploadImage(
+	public ResponseEntity<Response<String, Boolean>> uploadImage(
 			@RequestParam MultipartFile file,
 			@RequestParam Integer id) {
-		Response r = new Response();
+		Response<String, Boolean> r = new Response<String, Boolean>();
 		HttpStatus status = HttpStatus.OK;
 		try {
 			 /*
@@ -61,8 +59,8 @@ public class UploadController {
 	 }
 	
 	@GetMapping("getUrl")
-	public ResponseEntity<Response> getUrl(@RequestParam (required = true) String filename) {
-		Response r = new Response();
+	public ResponseEntity<Response<String, Boolean>> getUrl(@RequestParam (required = true) String filename) {
+		Response<String, Boolean> r = new Response<String, Boolean>();
 		HttpStatus status = HttpStatus.OK;
 		
 		r.setMsg(uplS.buildUrl(filename));

@@ -25,8 +25,8 @@ public class StockController {
 	}
 
 	@PostMapping("/update")
-	public ResponseEntity<Response> update(@RequestBody (required = true) StockReq req) {
-		Response r = new Response();
+	public ResponseEntity<Response<String, Boolean>> update(@RequestBody (required = true) StockReq req) {
+		Response<String, Boolean> r = new Response<String, Boolean>();
 		HttpStatus status = HttpStatus.OK;
 		try {
 			stockS.update(req);
@@ -39,8 +39,8 @@ public class StockController {
 	}
 	
 	@DeleteMapping("/delete")
-	public ResponseEntity<Response> delete(@RequestBody (required = true) StockReq req) {
-		Response r = new Response();
+	public ResponseEntity<Response<String, Boolean>> delete(@RequestBody (required = true) StockReq req) {
+		Response<String, Boolean> r = new Response<String, Boolean>();
 		HttpStatus status = HttpStatus.OK;
 		try {
 			stockS.delete(req);

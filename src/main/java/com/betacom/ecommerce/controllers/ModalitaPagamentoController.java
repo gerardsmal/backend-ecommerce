@@ -45,7 +45,7 @@ public class ModalitaPagamentoController {
 		try {		
 			return ResponseEntity.status(status).body(pagaS.getModalita(id));
 		} catch (Exception e) {
-			Response r = new Response();
+			Response<String, Boolean> r = new Response<String, Boolean>();
 			r.setMsg(e.getMessage());
 			status = HttpStatus.BAD_REQUEST;
 			return ResponseEntity.status(status).body(r);

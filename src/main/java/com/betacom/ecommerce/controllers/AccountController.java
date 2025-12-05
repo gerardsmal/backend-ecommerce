@@ -2,7 +2,6 @@ package com.betacom.ecommerce.controllers;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -32,8 +31,8 @@ public class AccountController {
 	}
 
 	@PostMapping("/create")
-	public ResponseEntity<Response> create(@RequestBody(required = true) AccountReq req) {
-	    Response response = new Response();
+	public ResponseEntity<Response<String, Boolean>> create(@RequestBody(required = true) AccountReq req) {
+		Response<String, Boolean> response = new Response<String, Boolean>();
 	    HttpStatus status = HttpStatus.OK;
 
 	    try {
@@ -48,8 +47,8 @@ public class AccountController {
 	}
 
 	@PutMapping("/update")
-	public ResponseEntity<Response> update(@RequestBody(required = true) AccountReq req) {
-	    Response response = new Response();
+	public ResponseEntity<Response<String, Boolean>> update(@RequestBody(required = true) AccountReq req) {
+		Response<String, Boolean> response = new Response<String, Boolean>();
 	    HttpStatus status = HttpStatus.OK;
 
 	    try {
@@ -64,9 +63,9 @@ public class AccountController {
 	}
 
 	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<Response> delete(@PathVariable (required = true) Integer id) {
+	public ResponseEntity<Response<String, Boolean>> delete(@PathVariable (required = true) Integer id) {
 	    HttpStatus status = HttpStatus.OK;
-	    Response response= new Response();
+	    Response<String, Boolean> response= new Response<String, Boolean>();
 	    try {
 	    	accS.delete(id);
 	    	response.setMsg(validS.getMessaggio("deleted"));
@@ -119,7 +118,7 @@ public class AccountController {
 		try {		
 			return ResponseEntity.status(status).body(accS.getById(id));
 		} catch (Exception e) {
-			Response r = new Response();
+			Response<String, Boolean> r = new Response<String, Boolean>();
 			r.setMsg(e.getMessage());
 			status = HttpStatus.BAD_REQUEST;
 			return ResponseEntity.status(status).body(r);
