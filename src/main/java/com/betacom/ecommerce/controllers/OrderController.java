@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.betacom.ecommerce.dto.input.OrderReq;
 import com.betacom.ecommerce.dto.input.SpedizioneReq;
-import com.betacom.ecommerce.response.Response;
+import com.betacom.ecommerce.response.ResponseV1;
 import com.betacom.ecommerce.services.interfaces.IOrderServices;
 import com.betacom.ecommerce.services.interfaces.ISpedizioneServices;
 import com.betacom.ecommerce.services.interfaces.IValidationServices;
@@ -34,8 +34,8 @@ public class OrderController {
 	}
 
 	@PostMapping("/init")
-	public ResponseEntity<Response> init(@RequestBody (required = true) SpedizioneReq req) {
-		Response r = new Response(); 
+	public ResponseEntity<ResponseV1<String>> init(@RequestBody (required = true) SpedizioneReq req) {
+		ResponseV1<String> r = new ResponseV1<String>(); 
 		HttpStatus status = HttpStatus.OK;
 		try {
 			spedS.init(req);
@@ -49,8 +49,8 @@ public class OrderController {
 	
 
 	@PostMapping("/createSpedizione")
-	public ResponseEntity<Response> createSpedizione(@RequestBody (required = true) SpedizioneReq req) {
-		Response r = new Response(); 
+	public ResponseEntity<ResponseV1<String>> createSpedizione(@RequestBody (required = true) SpedizioneReq req) {
+		ResponseV1<String> r = new ResponseV1<String>(); 
 		HttpStatus status = HttpStatus.OK;
 		try {
 			spedS.create(req);
@@ -63,8 +63,8 @@ public class OrderController {
 	}
 
 	@PutMapping("/updateSpedizione")
-	public ResponseEntity<Response> updateSpedizione(@RequestBody (required = true) SpedizioneReq req) {
-		Response r = new Response(); 
+	public ResponseEntity<ResponseV1<String>> updateSpedizione(@RequestBody (required = true) SpedizioneReq req) {
+		ResponseV1<String> r = new ResponseV1<String>(); 
 		HttpStatus status = HttpStatus.OK;
 		try {
 			spedS.update(req);
@@ -78,9 +78,9 @@ public class OrderController {
 	
 
 	@DeleteMapping("/deleteSpedizione/{id}")
-	public ResponseEntity<Response> deleteSpedizione(@PathVariable (required = true) Integer id) {
+	public ResponseEntity<ResponseV1<String>> deleteSpedizione(@PathVariable (required = true) Integer id) {
 	    HttpStatus status = HttpStatus.OK;
-	    Response response= new Response();
+	    ResponseV1<String> response= new ResponseV1<String>();
 	    try {
 	    	spedS.delete(id);
 	    	response.setMsg(validS.getMessaggio("deleted"));
@@ -114,21 +114,36 @@ public class OrderController {
 		try {		
 			return ResponseEntity.status(status).body(spedS.getById(id));
 		} catch (Exception e) {
-			Response r = new Response();
+			ResponseV1<String> r = new ResponseV1<String>();
 			r.setMsg(e.getMessage());
 			status = HttpStatus.BAD_REQUEST;
 			return ResponseEntity.status(status).body(r);
 		}
 	}
 
+	@GetMapping("orderStatus")
+	public ResponseEntity<Object> orderStatus(@RequestParam (required = true) Integer id) {
+		HttpStatus status = HttpStatus.OK;
+		try {
+			ResponseV1<Boolean> r = new ResponseV1<Boolean>();
+			r.setMsg(orderS.getOrderStatus(id));
+			return ResponseEntity.status(status).body(r);
+		} catch (Exception e) {
+			ResponseV1<String> r = new ResponseV1<String>();
+			r.setMsg(e.getMessage());
+			status = HttpStatus.BAD_REQUEST;
+			return ResponseEntity.status(status).body(r);
+		}
+		
+	}
 	
 	@PostMapping("/create")
-	public ResponseEntity<Response> create(@RequestBody (required = true) OrderReq req) {
-		Response r = new Response(); 
+	public ResponseEntity<ResponseV1<String>> create(@RequestBody (required = true) OrderReq req) {
+		ResponseV1<String> r = new ResponseV1<String>(); 
 		HttpStatus status = HttpStatus.OK;
 		try {
 			orderS.create(req);
-			r.setMsg(validS.getMessaggio("created"));
+			r.setMsg(validS.getMessaggio("order_created"));
 		} catch (Exception e) {
 			r.setMsg(e.getMessage());
 			status = HttpStatus.BAD_REQUEST;
@@ -137,8 +152,8 @@ public class OrderController {
 	}
 
 	@PostMapping("/confirm")
-	public ResponseEntity<Response> confirm(@RequestBody (required = true) OrderReq req) {
-		Response r = new Response(); 
+	public ResponseEntity<ResponseV1<String>> confirm(@RequestBody (required = true) OrderReq req) {
+		ResponseV1<String> r = new ResponseV1<String>(); 
 		HttpStatus status = HttpStatus.OK;
 		try {
 			orderS.confirm(req);
@@ -152,8 +167,8 @@ public class OrderController {
 
 	
 	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<Response> delete(@PathVariable (required = true) Integer id) {
-		Response r = new Response();
+	public ResponseEntity<ResponseV1<String>> delete(@PathVariable (required = true) Integer id) {
+		ResponseV1<String> r = new ResponseV1<String>();
 		HttpStatus status = HttpStatus.OK;
 		try {
 			orderS.remove(id);

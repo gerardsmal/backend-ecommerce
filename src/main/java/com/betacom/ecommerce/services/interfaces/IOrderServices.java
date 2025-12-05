@@ -10,6 +10,8 @@ public interface IOrderServices {
 	void create(OrderReq req) throws Exception;
 	void remove(Integer id) throws Exception;
 	void confirm(OrderReq req) throws Exception;
+	
+	Boolean getOrderStatus(Integer id) throws Exception;
 
 	List<OrderDTO> listByAccountId(Integer id) throws Exception;
 }

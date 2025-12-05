@@ -171,7 +171,7 @@ public class AccountImpl implements IAccountServices{
 	public void delete(Integer id) throws Exception {
 		log.debug("delete:" + id);
 		Account acc = accR.findById(id)
-				.map(ac -> ac.getOders() == null || ac.getOders().isEmpty()
+				.map(ac -> ac.getOrders() == null || ac.getOrders().isEmpty()
 					? deleteAccount(ac)
 					: disableAccount(ac))						
 				.orElseThrow(() -> new Exception(validS.getMessaggio("account_ntfnd")));
