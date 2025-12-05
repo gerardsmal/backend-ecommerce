@@ -25,7 +25,7 @@ public class OrderItems {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id;
 	
-	@Column(name="data_aggiunto_carella")
+	@Column(name="data_aggiunto_carrello")
 	private LocalDate dataCreazione;
 	
 	private Integer quantita;

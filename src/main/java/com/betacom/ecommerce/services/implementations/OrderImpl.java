@@ -68,6 +68,22 @@ public class OrderImpl implements IOrderServices{
 		this.modR = modR;
 	}
 	
+	@Override
+	public Boolean getOrderStatus(Integer id) throws Exception {
+		log.debug("getOrderStatus:" + id);
+		Account ac = accountR.findById(id)
+				.orElseThrow(() -> new Exception(validS.getMessaggio("account_ntfnd")));
+		
+		
+		if (ac.getCarello().getStato() == StatoCarello.valueOf("ordine"))
+			return false;		
+		
+		
+		return true;
+		
+	}
+
+	
 	@Transactional (rollbackFor = Exception.class)	
 	@Override
 	public void create(OrderReq req) throws Exception {
@@ -144,8 +160,10 @@ public class OrderImpl implements IOrderServices{
 	@Override
 	public void remove(Integer id) throws Exception {
 		log.debug("Remove {}:" ,id);
-		Order order = orderR.findById(id)
-				.orElseThrow(() -> new Exception(validS.getMessaggio("order_ntfnd")));
+		Account ac = accountR.findById(id)
+				.orElseThrow(() -> new Exception(validS.getMessaggio("account_ntfnd")));
+		
+		Order order = retrieveCurrentOrder(ac);
 		
 		// control order status
 		Optional.ofNullable(order.getStatusPagamento())
@@ -161,11 +179,23 @@ public class OrderImpl implements IOrderServices{
 	}
 	
 	@Transactional (rollbackFor = Exception.class)	
+	private Order retrieveCurrentOrder(Account account) throws Exception{
+		List<Order> lO = orderR.findByAccountAndStatusPagamento(account, StatusPagamento.valueOf("IN_CORSO"));
+		if (lO.size() > 1) throw new Exception("numero di ordine in corso > 1");
+		return lO.getFirst();
+		
+	}
+	
+	@Transactional (rollbackFor = Exception.class)	
 	@Override
 	public void confirm(OrderReq req) throws Exception {
 		log.debug("confirm:" + req);
-		Order order = orderR.findById(req.getId())
-				.orElseThrow(() -> new Exception(validS.getMessaggio("order_ntfnd")));
+		
+		Account ac = accountR.findById(req.getAccountID())
+				.orElseThrow(() -> new Exception(validS.getMessaggio("account_ntfnd")));
+		
+		Order order = retrieveCurrentOrder(ac);
+		
 		try {
 			order.setStatusPagamento(StatusPagamento.valueOf("PAGATO"));	
 		} catch (IllegalArgumentException e) {
@@ -190,7 +220,7 @@ public class OrderImpl implements IOrderServices{
 		Account ac = accountR.findById(id)
 				.orElseThrow(() -> new Exception(validS.getMessaggio("account_ntfnd")));
 		
-		return ac.getOders().stream()
+		return ac.getOrders().stream()
 				.map(o -> OrderDTO.builder()						
 						.dataOrdine(o.getDataOrdine())
 						.dataInvio(o.getDataInvio())
@@ -223,6 +253,7 @@ public class OrderImpl implements IOrderServices{
 		carello.setStato(StatoCarello.valueOf(status));
 		carelloR.save(carello);
 	}
+
 
 
 }
