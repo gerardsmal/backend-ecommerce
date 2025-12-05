@@ -1,6 +1,5 @@
 package com.betacom.ecommerce.controllers;
 
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -32,8 +31,8 @@ public class FamigliaController {
 
 	
 	@PostMapping("/create")
-	public ResponseEntity<Response> create(@RequestBody (required = true) FamigliaReq req) {
-		Response r = new Response(); 
+	public ResponseEntity<Response<String, Boolean>> create(@RequestBody (required = true) FamigliaReq req) {
+		Response<String, Boolean> r = new Response<String, Boolean>(); 
 		HttpStatus status = HttpStatus.OK;
 		try {
 			famS.create(req);
@@ -46,8 +45,8 @@ public class FamigliaController {
 	}
 
 	@PutMapping("/update")
-	public ResponseEntity<Response> update(@RequestBody (required = true) FamigliaReq req) {
-		Response r = new Response();
+	public ResponseEntity<Response<String, Boolean>> update(@RequestBody (required = true) FamigliaReq req) {
+		Response<String, Boolean> r = new Response<String, Boolean>();
 		HttpStatus status = HttpStatus.OK;
 		try {
 			famS.update(req);
@@ -61,9 +60,9 @@ public class FamigliaController {
 
 
 	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<Response> delete(@PathVariable (required = true) Integer id) {
+	public ResponseEntity<Response<String, Boolean>> delete(@PathVariable (required = true) Integer id) {
 
-		Response r = new Response();
+		Response<String, Boolean> r = new Response<String, Boolean>();
 		HttpStatus status = HttpStatus.OK;
 		try {
 			famS.delete(id);

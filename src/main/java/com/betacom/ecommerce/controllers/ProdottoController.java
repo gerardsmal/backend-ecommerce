@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.betacom.ecommerce.dto.input.ProdottoReq;
 import com.betacom.ecommerce.response.Response;
-import com.betacom.ecommerce.response.ResponseInt;
 import com.betacom.ecommerce.services.interfaces.IProdottoServices;
 import com.betacom.ecommerce.services.interfaces.IValidationServices;
 
@@ -35,8 +34,8 @@ public class ProdottoController {
 	
 	
 	@PostMapping("/create")
-	public ResponseEntity<ResponseInt> create(@RequestBody (required = true) ProdottoReq req) {
-		ResponseInt r = new ResponseInt();
+	public ResponseEntity<Response<String, Integer>> create(@RequestBody (required = true) ProdottoReq req) {
+		Response<String, Integer> r = new Response<String, Integer>();
 		HttpStatus status = HttpStatus.OK;
 		try {
 			r.setResult(prodS.create(req));
@@ -51,8 +50,8 @@ public class ProdottoController {
 	
 	
 	@PutMapping("/update")
-	public ResponseEntity<Response> update(@RequestBody (required = true) ProdottoReq req) {
-		Response r = new Response();
+	public ResponseEntity<Response<String, Boolean>> update(@RequestBody (required = true) ProdottoReq req) {
+		Response<String, Boolean> r = new Response<String, Boolean>();
 		HttpStatus status = HttpStatus.OK;
 		try {
 			prodS.update(req);
@@ -66,8 +65,8 @@ public class ProdottoController {
 	}
 	
 	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<Response> delete(@PathVariable (required = true) Integer id) {
-		Response r = new Response();
+	public ResponseEntity<Response<String, Boolean>> delete(@PathVariable (required = true) Integer id) {
+		Response<String, Boolean> r = new Response<String, Boolean>();
 		HttpStatus status = HttpStatus.OK;
 		try {
 			prodS.delete(id);

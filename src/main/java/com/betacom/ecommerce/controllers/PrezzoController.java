@@ -30,8 +30,8 @@ public class PrezzoController {
 	}
 	
 	@PostMapping("/addPrezzo")
-	public ResponseEntity<Response> create(@RequestBody (required = true) PrezzoReq req) {
-		Response r = new Response();
+	public ResponseEntity<Response<String, Boolean>> create(@RequestBody (required = true) PrezzoReq req) {
+		Response<String, Boolean> r = new Response<String, Boolean>();
 		HttpStatus status = HttpStatus.OK;
 		try {
 			prezzoS.addPrezzo(req);
@@ -44,8 +44,8 @@ public class PrezzoController {
 	}
 	
 	@PostMapping("/addPrezzoStock")
-	public ResponseEntity<Response> createPrezzoStocke(@RequestBody (required = true) PrezzoReq req) {
-		Response r = new Response();
+	public ResponseEntity<Response<String, Boolean>> createPrezzoStocke(@RequestBody (required = true) PrezzoReq req) {
+		Response<String, Boolean> r = new Response<String, Boolean>();
 		HttpStatus status = HttpStatus.OK;
 		try {
 			prezzoS.addPrezzoStock(req);
@@ -59,8 +59,8 @@ public class PrezzoController {
 	
 	
 	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<Response> delete(@PathVariable (required = true) Integer id) {
-		Response r = new Response();
+	public ResponseEntity<Response<String, Boolean>> delete(@PathVariable (required = true) Integer id) {
+		Response<String, Boolean> r = new Response<String, Boolean>();
 		HttpStatus status = HttpStatus.OK;
 		try {
 			prezzoS.removePrezzo(id);

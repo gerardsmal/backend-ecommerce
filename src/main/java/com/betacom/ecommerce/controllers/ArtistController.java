@@ -31,8 +31,8 @@ public class ArtistController {
 	}
 
 	@PostMapping("/create")
-	public ResponseEntity<Response> create(@RequestBody (required = true) ArtistReq req) {
-		Response r = new Response();
+	public ResponseEntity<Response<String, Boolean>> create(@RequestBody (required = true) ArtistReq req) {
+		Response<String, Boolean> r = new Response<String, Boolean>();
 		HttpStatus status = HttpStatus.OK;
 		try {
 			artS.create(req);
@@ -45,8 +45,8 @@ public class ArtistController {
 	}
 	
 	@PutMapping("/update")
-	public ResponseEntity<Response> update(@RequestBody (required = true) ArtistReq req) {
-		Response r = new Response();
+	public ResponseEntity<Response<String, Boolean>> update(@RequestBody (required = true) ArtistReq req) {
+		Response<String, Boolean> r = new Response<String, Boolean>();
 		HttpStatus status = HttpStatus.OK;
 		try {
 			artS.update(req);
@@ -59,8 +59,8 @@ public class ArtistController {
 	}
 
 	@DeleteMapping("/delete/{id}")
-	public ResponseEntity<Response> delete(@PathVariable (required = true) Integer id) {
-		Response r = new Response();
+	public ResponseEntity<Response<String, Boolean>> delete(@PathVariable (required = true) Integer id) {
+		Response<String, Boolean> r = new Response<String, Boolean>();
 		HttpStatus status = HttpStatus.OK;
 		try {
 			artS.remove(id);
@@ -75,9 +75,9 @@ public class ArtistController {
 	
 	
 	@DeleteMapping("/removeFamiglia/{id}/{famiglia}")
-	public ResponseEntity<Response> removeFamiglia(@PathVariable (required = true) Integer id, 
+	public ResponseEntity<Response<String, Boolean>> removeFamiglia(@PathVariable (required = true) Integer id, 
 				@PathVariable (required = true) Integer famiglia) {
-		Response r = new Response();
+		Response<String, Boolean> r = new Response<String, Boolean>();
 		HttpStatus status = HttpStatus.OK;
 		try {
 			artS.removeFamigliaArtist(id, famiglia);
@@ -91,8 +91,8 @@ public class ArtistController {
 
 	
 	@PutMapping("/changeFamily")
-	public ResponseEntity<Response> changeFamily(@RequestBody (required = true) ChangeFamilyReq req) {
-		Response r = new Response();
+	public ResponseEntity<Response<String, Boolean>> changeFamily(@RequestBody (required = true) ChangeFamilyReq req) {
+		Response<String, Boolean> r = new Response<String, Boolean>();
 		HttpStatus status = HttpStatus.OK;
 		try {
 			artS.changeFamily(req);

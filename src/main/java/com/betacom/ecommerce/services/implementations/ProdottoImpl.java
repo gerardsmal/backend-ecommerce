@@ -3,18 +3,13 @@ package com.betacom.ecommerce.services.implementations;
 import static com.betacom.ecommerce.utils.Utilities.buildFamigliaDTOList;
 import static com.betacom.ecommerce.utils.Utilities.buildPrezzoDTOList;
 
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.betacom.ecommerce.controllers.UploadController;
 import com.betacom.ecommerce.dto.input.ProdottoReq;
 import com.betacom.ecommerce.dto.output.ArtistaDTO;
 import com.betacom.ecommerce.dto.output.FamigliaDTO;
@@ -27,9 +22,9 @@ import com.betacom.ecommerce.models.Prodotto;
 import com.betacom.ecommerce.repositories.IArtistRepository;
 import com.betacom.ecommerce.repositories.IFamigliaRepository;
 import com.betacom.ecommerce.repositories.IProdottoRepository;
-import com.betacom.ecommerce.services.interfaces.IValidationServices;
 import com.betacom.ecommerce.services.interfaces.IProdottoServices;
 import com.betacom.ecommerce.services.interfaces.IUploadServices;
+import com.betacom.ecommerce.services.interfaces.IValidationServices;
 
 import lombok.extern.slf4j.Slf4j;
 
