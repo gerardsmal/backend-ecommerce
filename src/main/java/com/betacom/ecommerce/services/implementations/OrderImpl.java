@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.betacom.ecommerce.dto.input.OrderReq;
 import com.betacom.ecommerce.dto.output.OrderDTO;
 import com.betacom.ecommerce.dto.output.OrderItemDTO;
+import com.betacom.ecommerce.dto.output.SpedizioneDTO;
 import com.betacom.ecommerce.enums.StatoCarello;
 import com.betacom.ecommerce.enums.StatusPagamento;
 import com.betacom.ecommerce.models.Account;
@@ -29,6 +30,7 @@ import com.betacom.ecommerce.repositories.IRigaCarelloRepository;
 import com.betacom.ecommerce.repositories.ISpedizioneRepository;
 import com.betacom.ecommerce.services.interfaces.IOrderCounterServices;
 import com.betacom.ecommerce.services.interfaces.IOrderServices;
+import com.betacom.ecommerce.services.interfaces.IUploadServices;
 import com.betacom.ecommerce.services.interfaces.IValidationServices;
 
 import lombok.extern.slf4j.Slf4j;
@@ -46,7 +48,7 @@ public class OrderImpl implements IOrderServices{
 	private final IOrderCounterServices  countS;
 	private final ISpedizioneRepository  spedR;
 	private final IModalidaPagamentoRepository  modR;
-	
+	private final IUploadServices  uploadS;
 	
 	public OrderImpl(IAccountRepository accountR, 
 			IOrderRepository orderR, 
@@ -56,7 +58,8 @@ public class OrderImpl implements IOrderServices{
 			IRigaCarelloRepository rigaCarelloR,
 			IOrderCounterServices  countS,
 			ISpedizioneRepository  spedR,
-			IModalidaPagamentoRepository  modR) {
+			IModalidaPagamentoRepository  modR,
+			IUploadServices  uploadS) {
 		this.accountR = accountR;
 		this.orderR = orderR;
 		this.validS = validS;
@@ -66,6 +69,7 @@ public class OrderImpl implements IOrderServices{
 		this.countS = countS;
 		this.spedR = spedR;
 		this.modR = modR;
+		this.uploadS = uploadS;
 	}
 	
 	@Override
@@ -188,7 +192,7 @@ public class OrderImpl implements IOrderServices{
 	
 	@Transactional (rollbackFor = Exception.class)	
 	@Override
-	public void confirm(OrderReq req) throws Exception {
+	public OrderDTO confirm(OrderReq req) throws Exception {
 		log.debug("confirm:" + req);
 		
 		Account ac = accountR.findById(req.getAccountID())
@@ -211,6 +215,8 @@ public class OrderImpl implements IOrderServices{
 		
 		updateCarelloStatus(order.getAccount().getCarello(), "carello");
 		log.debug("After update status carello");
+		
+		return getLastOrdine(req.getAccountID());
 	}
 
 
@@ -221,17 +227,55 @@ public class OrderImpl implements IOrderServices{
 				.orElseThrow(() -> new Exception(validS.getMessaggio("account_ntfnd")));
 		
 		return ac.getOrders().stream()
-				.map(o -> OrderDTO.builder()						
+				.map(o -> OrderDTO.builder()
+						.numeroOrdine(o.getNumeroOrdine())
 						.dataOrdine(o.getDataOrdine())
 						.dataInvio(o.getDataInvio())
 						.id(o.getId())
+						.modalitaPagamento(o.getModalitaPagamento().getTipo())
 						.prezzoTotale(o.getTotale())
 						.status(o.getStatusPagamento().toString())
+						.spedizione(buildSprdizione(o.getSpedizione()))
+						.modalitaPagamento(o.getModalitaPagamento().getTipo())
 						.riga(buildRigaOrdine(o.getOrderItems()))
 						.build())
 				.toList();
 	}
+	
+	@Override
+	public OrderDTO getLastOrdine(Integer id) throws Exception {
+		log.debug("listByAccountId:" + id);
+		Account ac = accountR.findById(id)
+				.orElseThrow(() -> new Exception(validS.getMessaggio("account_ntfnd")));
+		
+		Order o = ac.getOrders().getFirst();
+		
+		return OrderDTO.builder()
+						.numeroOrdine(o.getNumeroOrdine())
+						.dataOrdine(o.getDataOrdine())
+						.dataInvio(o.getDataInvio())
+						.id(o.getId())
+						.modalitaPagamento(o.getModalitaPagamento().getTipo())
+						.prezzoTotale(o.getTotale())
+						.status(o.getStatusPagamento().toString())
+						.spedizione(buildSprdizione(o.getSpedizione()))
+						.modalitaPagamento(o.getModalitaPagamento().getTipo())
+						.riga(buildRigaOrdine(o.getOrderItems()))
+						.build();
+	}
+	
 
+
+	private SpedizioneDTO buildSprdizione(Spedizione s) {
+		return SpedizioneDTO.builder()
+				.nome(s.getNome())
+				.cognome(s.getCognome())
+				.via(s.getVia())
+				.cognome(s.getCommune())
+				.cap(s.getCap())
+				.build();
+	}
+	
 	private List<OrderItemDTO> buildRigaOrdine(List<OrderItems> riga){
 		return riga.stream()
 				.map(r -> OrderItemDTO.builder()
@@ -244,6 +288,7 @@ public class OrderImpl implements IOrderServices{
 						.prezzoUnitario(r.getPrezzoUnit())
 						.quantita(r.getQuantita())
 						.supporto(r.getSupporto().toString())
+						.image(r.getImage() == null ? null : uploadS.buildUrl(r.getImage()))
 						.build())
 				.toList();
 	

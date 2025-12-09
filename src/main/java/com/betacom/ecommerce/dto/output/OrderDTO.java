@@ -12,11 +12,12 @@ import lombok.Setter;
 @Builder
 public class OrderDTO {
 	private Integer id;
+	private Long numeroOrdine;
 	private LocalDate dataOrdine;
 	private LocalDate dataInvio;
 	private String status;
 	private double prezzoTotale;
 	private SpedizioneDTO spedizione;
-	private ModalitaPagamentoDTO modalitaPagamento;
+	private String modalitaPagamento;
 	List<OrderItemDTO> riga;
 }
