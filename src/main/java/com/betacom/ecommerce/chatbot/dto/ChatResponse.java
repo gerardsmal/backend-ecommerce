@@ -1,4 +1,4 @@
-package com.betacom.ecommerce.dto.chatbot;
+package com.betacom.ecommerce.chatbot.dto;
 
 import java.util.List;
 

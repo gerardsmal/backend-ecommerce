@@ -19,7 +19,6 @@ spring:
               action: drop-and-create
               create-target: define.sql
               drop-target: drop.sql
-            # Append disattivato
       hibernate.hbm2ddl.schema-generation.script.append: false
 
   servlet:
@@ -38,7 +37,8 @@ logging:
           descriptor:
             sql:
               BasicBinder: TRACE
-        # SQL: DEBUG  (se vuoi scommentarlo)
+        # SQL:
+        #   DEBUG   # se vuoi abilitare il log SQL
   file:
     name: ./ecommerce.log
 
@@ -48,9 +48,7 @@ app:
 
 lang: IT
 
-
 chatbot:
   faq-file: classpath:data/qa/faq_chatbot.json
   flow-file: classpath:data/qa/flow.json
-
-
+  synonyms-file: classpath:data/synonyms.json
