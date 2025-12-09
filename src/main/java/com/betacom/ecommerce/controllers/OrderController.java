@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.betacom.ecommerce.dto.input.OrderReq;
 import com.betacom.ecommerce.dto.input.SpedizioneReq;
+import com.betacom.ecommerce.dto.output.OrderDTO;
 import com.betacom.ecommerce.response.Response;
 import com.betacom.ecommerce.services.interfaces.IOrderServices;
 import com.betacom.ecommerce.services.interfaces.ISpedizioneServices;
@@ -151,18 +152,20 @@ public class OrderController {
 		return ResponseEntity.status(status).body(r);
 	}
 
-	@PostMapping("/confirm")
-	public ResponseEntity<Response<String, Boolean>> confirm(@RequestBody (required = true) OrderReq req) {
-		Response<String, Boolean> r = new Response<String, Boolean>(); 
+	@PutMapping("/confirm")
+	public ResponseEntity<Object> confirm(@RequestBody (required = true) OrderReq req) {
+
 		HttpStatus status = HttpStatus.OK;
 		try {
-			orderS.confirm(req);
-			r.setMsg(validS.getMessaggio("confirmed"));
+			OrderDTO r = orderS.confirm(req);
+			return ResponseEntity.status(status).body(r);
 		} catch (Exception e) {
+			Response<String, Boolean> r = new Response<String, Boolean>(); 
 			r.setMsg(e.getMessage());
 			status = HttpStatus.BAD_REQUEST;
+			return ResponseEntity.status(status).body(r);
 		}
-		return ResponseEntity.status(status).body(r);
+	
 	}
 
 	
@@ -186,6 +189,19 @@ public class OrderController {
 		HttpStatus status = HttpStatus.OK;
 		try {
 			r=orderS.listByAccountId(id);
+		} catch (Exception e) {
+			r=e.getMessage();
+			status = HttpStatus.BAD_REQUEST;
+		}
+		return ResponseEntity.status(status).body(r);
+	}
+	
+	@GetMapping("/lastOrder")
+	public ResponseEntity<Object> lastOrder(@RequestParam (required = true) Integer id){	
+		Object r = new Object();
+		HttpStatus status = HttpStatus.OK;
+		try {
+			r=orderS.getLastOrdine(id);
 		} catch (Exception e) {
 			r=e.getMessage();
 			status = HttpStatus.BAD_REQUEST;

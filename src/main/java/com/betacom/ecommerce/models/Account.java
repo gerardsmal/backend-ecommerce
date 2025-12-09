@@ -19,6 +19,7 @@ import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.OrderBy;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -99,6 +100,7 @@ public class Account {
 			mappedBy = "account",
 			fetch = FetchType.EAGER
 			)
+	@OrderBy("id DESC")
 	private List<Order> orders; 
 	
 	@OneToMany(

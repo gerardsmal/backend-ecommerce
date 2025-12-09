@@ -23,6 +23,7 @@ public class OrderCounterImpl implements IOrderCounterServices{
 				.orElseThrow(() -> new Exception("Counter table not initilized.."));
 		
 		Long next = counter.getCurrentValue() + 1;
+		counter.setCurrentValue(next);
 		countR.save(counter);
 		
 		

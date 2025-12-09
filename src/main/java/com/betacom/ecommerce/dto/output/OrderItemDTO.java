@@ -17,6 +17,7 @@ public class OrderItemDTO {
 	private String genere;
 	private String supporto;
 	private Integer quantita;
+	private String image;
 	private double prezzoUnitario;
 	private double prezzoDaPagare;
 
