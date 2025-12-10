@@ -15,16 +15,15 @@ import com.betacom.ecommerce.response.Response;
 import com.betacom.ecommerce.services.interfaces.ICarelloServices;
 import com.betacom.ecommerce.services.interfaces.IValidationServices;
 
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("rest/carello")
 public class CarelloController {
-	private ICarelloServices carS;
-	private IValidationServices validS;
+	private final ICarelloServices carS;
+	private final IValidationServices validS;
 	
-	public CarelloController(ICarelloServices carS, IValidationServices validS) {
-		this.carS = carS;
-		this.validS = validS;
-	}
 
 	
 	@PostMapping("/addRiga")

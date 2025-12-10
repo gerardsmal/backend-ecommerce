@@ -33,9 +33,11 @@ import com.betacom.ecommerce.services.interfaces.IOrderServices;
 import com.betacom.ecommerce.services.interfaces.IUploadServices;
 import com.betacom.ecommerce.services.interfaces.IValidationServices;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
+@RequiredArgsConstructor
 @Service
 public class OrderImpl implements IOrderServices{
 
@@ -49,28 +51,6 @@ public class OrderImpl implements IOrderServices{
 	private final ISpedizioneRepository  spedR;
 	private final IModalidaPagamentoRepository  modR;
 	private final IUploadServices  uploadS;
-	
-	public OrderImpl(IAccountRepository accountR, 
-			IOrderRepository orderR, 
-			IValidationServices validS, 
-			IOrderItemsRepository itemR,
-			ICarelloRepository    carelloR,
-			IRigaCarelloRepository rigaCarelloR,
-			IOrderCounterServices  countS,
-			ISpedizioneRepository  spedR,
-			IModalidaPagamentoRepository  modR,
-			IUploadServices  uploadS) {
-		this.accountR = accountR;
-		this.orderR = orderR;
-		this.validS = validS;
-		this.itemR = itemR;
-		this.carelloR = carelloR;
-		this.rigaCarelloR = rigaCarelloR;
-		this.countS = countS;
-		this.spedR = spedR;
-		this.modR = modR;
-		this.uploadS = uploadS;
-	}
 	
 	@Override
 	public Boolean getOrderStatus(Integer id) throws Exception {
@@ -268,6 +248,8 @@ public class OrderImpl implements IOrderServices{
 
 	private SpedizioneDTO buildSprdizione(Spedizione s) {
 		return SpedizioneDTO.builder()
+				.id(s.getId())
+				.isDefault(s.getPredefinito())
 				.nome(s.getNome())
 				.cognome(s.getCognome())
 				.via(s.getVia())

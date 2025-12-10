@@ -10,21 +10,16 @@ import com.betacom.ecommerce.repositories.IModalidaPagamentoRepository;
 import com.betacom.ecommerce.services.interfaces.IModalitaPagamentoServices;
 import com.betacom.ecommerce.services.interfaces.IValidationServices;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+@RequiredArgsConstructor
 @Slf4j
 @Service
 public class ModalitaPagamentoImpl implements IModalitaPagamentoServices{
 
 	private final IModalidaPagamentoRepository pagaR;
 	private final IValidationServices validS;
-	
-	
-	public ModalitaPagamentoImpl(IModalidaPagamentoRepository pagaR, IValidationServices validS) {
-		this.pagaR = pagaR;
-		this.validS = validS;
-	}
-
 
 	@Override
 	public List<ModalitaPagamentoDTO> list() throws Exception {

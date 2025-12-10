@@ -24,32 +24,21 @@ import com.betacom.ecommerce.services.interfaces.ICarelloServices;
 import com.betacom.ecommerce.services.interfaces.IStockServices;
 import com.betacom.ecommerce.services.interfaces.IValidationServices;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+@RequiredArgsConstructor
 @Service
 @Slf4j
 public class CarelloImpl implements ICarelloServices{
 	
-	private ICarelloRepository carR;
-	private IAccountRepository accountR;
-	private IValidationServices  validS;
-	private IProdottoRepository prodR;
-	private IRigaCarelloRepository rigaR;
-	private IStockServices stockS;
+	private final ICarelloRepository carR;
+	private final IAccountRepository accountR;
+	private final IValidationServices  validS;
+	private final IProdottoRepository prodR;
+	private final IRigaCarelloRepository rigaR;
+	private final IStockServices stockS;
 	
-	public CarelloImpl(ICarelloRepository carR, 
-			IAccountRepository accountR, 
-			IValidationServices validS, 
-			IProdottoRepository prodR,
-			IRigaCarelloRepository rigaR,
-			IStockServices stockS) {
-		this.carR = carR;
-		this.accountR = accountR;
-		this.validS = validS;
-		this.prodR = prodR;
-		this.rigaR = rigaR;
-		this.stockS = stockS;
-	}
 	
 	@Transactional (rollbackFor = Exception.class)
 	@Override

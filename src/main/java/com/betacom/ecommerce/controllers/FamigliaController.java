@@ -17,18 +17,15 @@ import com.betacom.ecommerce.response.Response;
 import com.betacom.ecommerce.services.interfaces.IFamigliaServices;
 import com.betacom.ecommerce.services.interfaces.IValidationServices;
 
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("rest/famiglia")
 public class FamigliaController {
 
-	private IFamigliaServices famS;
-	private IValidationServices validS;
-	
-	public FamigliaController(IFamigliaServices famS, IValidationServices validS) {
-		this.famS = famS;
-		this.validS = validS;
-	}
-
+	private final IFamigliaServices famS;
+	private final IValidationServices validS;
 	
 	@PostMapping("/create")
 	public ResponseEntity<Response<String, Boolean>> create(@RequestBody (required = true) FamigliaReq req) {

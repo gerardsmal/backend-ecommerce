@@ -15,26 +15,21 @@ import com.betacom.ecommerce.repositories.ISpedizioneRepository;
 import com.betacom.ecommerce.services.interfaces.ISpedizioneServices;
 import com.betacom.ecommerce.services.interfaces.IValidationServices;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+@RequiredArgsConstructor
 @Slf4j
 @Service
 public class SpedizioneImpl implements ISpedizioneServices{
 
-    private final ValidationImpl validationImpl;
-	
+    private final ValidationImpl validationImpl;	
 	private final IAccountRepository accR;
 	private final ISpedizioneRepository spedR;
 	private final IValidationServices validS;
 	
 	private static String capRegex = "^[0-9]{5}$";
 	
-	public SpedizioneImpl(IAccountRepository accR, ISpedizioneRepository spedR, IValidationServices validS, ValidationImpl validationImpl) {
-		this.accR = accR;
-		this.spedR = spedR;
-		this.validS = validS;
-		this.validationImpl = validationImpl;
-	}
 
 	@Transactional (rollbackFor = Exception.class)
 	@Override

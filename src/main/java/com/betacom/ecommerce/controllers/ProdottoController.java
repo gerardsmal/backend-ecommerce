@@ -17,20 +17,15 @@ import com.betacom.ecommerce.response.Response;
 import com.betacom.ecommerce.services.interfaces.IProdottoServices;
 import com.betacom.ecommerce.services.interfaces.IValidationServices;
 
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("rest/prodotto")
 public class ProdottoController {
 
-	private IProdottoServices prodS;
-	private IValidationServices validS;
-	
-	public ProdottoController(IProdottoServices prodS, IValidationServices validS) {
-		super();
-		this.prodS = prodS;
-		this.validS = validS;
-	}
-
-
+	private final IProdottoServices prodS;
+	private final IValidationServices validS;
 	
 	
 	@PostMapping("/create")

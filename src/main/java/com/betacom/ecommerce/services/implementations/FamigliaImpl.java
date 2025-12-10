@@ -18,21 +18,17 @@ import com.betacom.ecommerce.repositories.IFamigliaRepository;
 import com.betacom.ecommerce.services.interfaces.IFamigliaServices;
 import com.betacom.ecommerce.services.interfaces.IValidationServices;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+@RequiredArgsConstructor
 @Slf4j
 @Service
 public class FamigliaImpl  implements IFamigliaServices{
 
-	private IFamigliaRepository repoF;
-	private IValidationServices msgS;
+	private final IFamigliaRepository repoF;
+	private final IValidationServices msgS;
 	
-	
-	public FamigliaImpl(IFamigliaRepository repoF, IValidationServices msgS) {
-		this.repoF = repoF;
-		this.msgS = msgS;
-	}
-
 	@Transactional (rollbackFor = Exception.class)
 	@Override
 	public void create(FamigliaReq req) throws Exception {

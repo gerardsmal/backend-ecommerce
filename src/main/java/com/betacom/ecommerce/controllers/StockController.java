@@ -13,16 +13,16 @@ import com.betacom.ecommerce.response.Response;
 import com.betacom.ecommerce.services.interfaces.IStockServices;
 import com.betacom.ecommerce.services.interfaces.IValidationServices;
 
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("rest/stock")
 public class StockController {
-	private IStockServices stockS;
-	private IValidationServices validS;
+
+	private final IStockServices stockS;
+	private final IValidationServices validS;
 	
-	public StockController(IStockServices stockS, IValidationServices validS) {
-		this.stockS = stockS;
-		this.validS = validS;
-	}
 
 	@PostMapping("/update")
 	public ResponseEntity<Response<String, Boolean>> update(@RequestBody (required = true) StockReq req) {

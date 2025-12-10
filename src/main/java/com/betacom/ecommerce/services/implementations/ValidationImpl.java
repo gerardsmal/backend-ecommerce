@@ -15,23 +15,20 @@ import com.betacom.ecommerce.models.Prezzo;
 import com.betacom.ecommerce.repositories.IMessaggiRepository;
 import com.betacom.ecommerce.services.interfaces.IValidationServices;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+@RequiredArgsConstructor
 @Slf4j
 @Service
 public class ValidationImpl implements IValidationServices{
 
-    private final EcommerceApplication ecommerceApplication;
 
-	private IMessaggiRepository msgR;
+	private final IMessaggiRepository msgR;
 	
 	@Value("${lang}")
 	private String lang;
 	
-	public ValidationImpl(IMessaggiRepository msgR, EcommerceApplication ecommerceApplication) {
-		this.msgR = msgR;
-		this.ecommerceApplication = ecommerceApplication;
-	}
 
 
 	@Override
