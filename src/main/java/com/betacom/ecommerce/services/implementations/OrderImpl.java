@@ -284,7 +284,7 @@ public class OrderImpl implements IOrderServices{
 						.productName(r.getProductName())
 						.genere(r.getGenere())
 						.id(r.getId())
-						.prezzoDaPagare(r.getPrezzoUnit())
+						.prezzoDaPagare(r.getPrezzo())
 						.prezzoUnitario(r.getPrezzoUnit())
 						.quantita(r.getQuantita())
 						.supporto(r.getSupporto().toString())
