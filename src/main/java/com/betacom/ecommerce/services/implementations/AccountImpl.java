@@ -205,6 +205,9 @@ public class AccountImpl implements IAccountServices{
 				.carrelloSize(user.getCarello() == null || user.getCarello().getRigaCarello() == null 
 						? 0
 						: user.getCarello().getRigaCarello().size())
+				.orderSize(user.getOrders() == null || user.getOrders().size() == 0 
+				? 0
+				: user.getOrders().size())
 				.userName(user.getNome() + " " + user.getCognome())
 				.role(user.getRole().toString())
 				.build();

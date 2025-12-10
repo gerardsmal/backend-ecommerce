@@ -11,6 +11,7 @@ public class SigninDTO {
 
 	private Integer userID;
 	private Integer carrelloSize;
+	private Integer orderSize;
 	private String userName;
 	private String role;
 }
