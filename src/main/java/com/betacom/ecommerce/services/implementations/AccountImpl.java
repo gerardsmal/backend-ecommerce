@@ -26,31 +26,23 @@ import com.betacom.ecommerce.services.interfaces.IAccountServices;
 import com.betacom.ecommerce.services.interfaces.IUploadServices;
 import com.betacom.ecommerce.services.interfaces.IValidationServices;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+@RequiredArgsConstructor
 @Service
 @Slf4j
 public class AccountImpl implements IAccountServices{
 
-	private IAccountRepository accR;
-	private IValidationServices  validS;
-	private PasswordEncoder    encoder;
-	private IUploadServices  uploadS;
+	private final IAccountRepository accR;
+	private final IValidationServices  validS;
+	private final PasswordEncoder    encoder;
+	private final IUploadServices  uploadS;
 
 	private static String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
 	private static String capRegex = "^[0-9]{5}$";
 	private static String telefonoRegex = "^(\\+39)?\\s?(3\\d{2}|0\\d{1,3})\\s?\\d{5,10}$";
 	
-	public AccountImpl(IAccountRepository accR, 
-			IValidationServices validS,
-			PasswordEncoder  encoder,
-			IUploadServices  uploadS) {
-		this.accR = accR;
-		this.validS = validS;
-		this.encoder = encoder;
-		this.uploadS = uploadS;
-	}
-
 	@Override
 	public void create(AccountReq req) throws Exception {
 		log.debug("create:" + req);

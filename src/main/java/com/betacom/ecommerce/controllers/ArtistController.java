@@ -18,17 +18,16 @@ import com.betacom.ecommerce.response.Response;
 import com.betacom.ecommerce.services.interfaces.IArtistServices;
 import com.betacom.ecommerce.services.interfaces.IValidationServices;
 
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("rest/artist")
 public class ArtistController {
 
-	private IArtistServices artS;
-	private IValidationServices validS;
+	private final IArtistServices artS;
+	private final IValidationServices validS;
 
-	public ArtistController(IArtistServices artS,IValidationServices validS) {
-		this.artS = artS;
-		this.validS = validS;
-	}
 
 	@PostMapping("/create")
 	public ResponseEntity<Response<String, Boolean>> create(@RequestBody (required = true) ArtistReq req) {

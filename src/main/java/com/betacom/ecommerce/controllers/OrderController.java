@@ -20,19 +20,17 @@ import com.betacom.ecommerce.services.interfaces.IOrderServices;
 import com.betacom.ecommerce.services.interfaces.ISpedizioneServices;
 import com.betacom.ecommerce.services.interfaces.IValidationServices;
 
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("rest/order")
 public class OrderController {
 
-	private IOrderServices orderS;
-	private IValidationServices validS;
-	private ISpedizioneServices spedS;
+	private final IOrderServices orderS;
+	private final IValidationServices validS;
+	private final ISpedizioneServices spedS;
 
-	public OrderController(IOrderServices orderS, IValidationServices validS, ISpedizioneServices spedS) {
-		this.orderS = orderS;
-		this.validS = validS;
-		this.spedS = spedS;
-	}
 
 	@PostMapping("/init")
 	public ResponseEntity<Response<String, Boolean>> init(@RequestBody (required = true) SpedizioneReq req) {

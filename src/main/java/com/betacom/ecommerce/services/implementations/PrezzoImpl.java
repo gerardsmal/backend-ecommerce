@@ -1,6 +1,5 @@
 package com.betacom.ecommerce.services.implementations;
 
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -16,30 +15,23 @@ import com.betacom.ecommerce.models.Prezzo;
 import com.betacom.ecommerce.models.Prodotto;
 import com.betacom.ecommerce.repositories.IPrezzoRepository;
 import com.betacom.ecommerce.repositories.IProdottoRepository;
-import com.betacom.ecommerce.services.interfaces.IValidationServices;
 import com.betacom.ecommerce.services.interfaces.IPrezzoServices;
 import com.betacom.ecommerce.services.interfaces.IStockServices;
+import com.betacom.ecommerce.services.interfaces.IValidationServices;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+@RequiredArgsConstructor
 @Slf4j
 @Service
 public class PrezzoImpl implements IPrezzoServices{
 
-	private IPrezzoRepository prezzoR;
-	private IProdottoRepository prodR;
-	private IValidationServices   msgS;
-	private IStockServices      stockS;
+	private final IPrezzoRepository prezzoR;
+	private final IProdottoRepository prodR;
+	private final IValidationServices   msgS;
+	private final IStockServices      stockS;
 	
-	
-	public PrezzoImpl(IPrezzoRepository prezzoR, 
-			IProdottoRepository prodR, 
-			IValidationServices   msgS, 
-			IStockServices      stockS) {
-		this.prezzoR = prezzoR;
-		this.prodR = prodR;
-		this.msgS  = msgS;
-		this.stockS = stockS;
-	}
 
 	@Transactional (rollbackFor = Exception.class)
 	@Override

@@ -13,6 +13,9 @@ import com.betacom.ecommerce.response.Response;
 import com.betacom.ecommerce.services.interfaces.IUploadServices;
 import com.betacom.ecommerce.services.interfaces.IValidationServices;
 
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/rest/upload")
 public class UploadController {
@@ -21,15 +24,7 @@ public class UploadController {
 	private final IUploadServices uplS;
 	private final IValidationServices valS;
 	
-	 
-//	@Value("${app.images.url-prefix:/images}")
-//	private String imagesUrlPrefix;
-
-	public UploadController(IUploadServices uplS, IValidationServices valS) {
-		this.uplS = uplS;
-		this.valS = valS;
-	}
-	 
+	 	 
 	@PostMapping(value = "/image", consumes = "multipart/form-data")
 	public ResponseEntity<Response<String, Boolean>> uploadImage(
 			@RequestParam MultipartFile file,

@@ -12,22 +12,19 @@ import org.springframework.web.bind.annotation.RestController;
 import com.betacom.ecommerce.dto.input.PrezzoReq;
 import com.betacom.ecommerce.response.Response;
 import com.betacom.ecommerce.services.interfaces.IPrezzoServices;
-import com.betacom.ecommerce.services.interfaces.IStockServices;
 import com.betacom.ecommerce.services.interfaces.IValidationServices;
 
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("rest/prezzo")
 public class PrezzoController {
 
-	private IPrezzoServices prezzoS;
-	private IValidationServices validS;
-	private IStockServices  stockS;
+	private final IPrezzoServices prezzoS;
+	private final IValidationServices validS;
 
-	public PrezzoController(IPrezzoServices prezzoS, IValidationServices validS, IStockServices  stockS) {
-		this.prezzoS = prezzoS;
-		this.validS = validS;
-		this.stockS = stockS;
-	}
+
 	
 	@PostMapping("/addPrezzo")
 	public ResponseEntity<Response<String, Boolean>> create(@RequestBody (required = true) PrezzoReq req) {

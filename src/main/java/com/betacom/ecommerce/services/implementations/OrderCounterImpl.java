@@ -7,14 +7,14 @@ import com.betacom.ecommerce.models.OrderCounter;
 import com.betacom.ecommerce.repositories.IOrderCounterRepository;
 import com.betacom.ecommerce.services.interfaces.IOrderCounterServices;
 
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 @Service
 public class OrderCounterImpl implements IOrderCounterServices{
 
 	private final IOrderCounterRepository countR;
 	
-	public OrderCounterImpl(IOrderCounterRepository countR) {
-		this.countR = countR;
-	}
 
 	@Transactional (rollbackFor = Exception.class)
 	@Override

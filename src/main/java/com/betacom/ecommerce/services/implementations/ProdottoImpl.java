@@ -26,28 +26,18 @@ import com.betacom.ecommerce.services.interfaces.IProdottoServices;
 import com.betacom.ecommerce.services.interfaces.IUploadServices;
 import com.betacom.ecommerce.services.interfaces.IValidationServices;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+@RequiredArgsConstructor
 @Slf4j
 @Service
 public class ProdottoImpl implements IProdottoServices{
 
-	private IProdottoRepository repP;
-	private IArtistRepository   artistR;
-	private IValidationServices validS;
-	private IUploadServices     uploadS;
-
-	
-	public ProdottoImpl(IProdottoRepository repP, 
-			IFamigliaRepository repF, 
-			IArtistRepository   artistR,
-			IValidationServices   msgS,
-			IUploadServices      uploadS) {
-		this.repP = repP;
-		this.artistR = artistR;
-		this.validS = msgS;
-		this.uploadS = uploadS;
-	}
+	private final IProdottoRepository repP;
+	private final IArtistRepository   artistR;
+	private final IValidationServices validS;
+	private final IUploadServices     uploadS;
 
 
 	@Transactional (rollbackFor =  Exception.class)	

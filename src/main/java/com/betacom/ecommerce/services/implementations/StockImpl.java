@@ -16,22 +16,17 @@ import com.betacom.ecommerce.repositories.IStockRepositoy;
 import com.betacom.ecommerce.services.interfaces.IValidationServices;
 import com.betacom.ecommerce.services.interfaces.IStockServices;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+@RequiredArgsConstructor
 @Slf4j
 @Service
 public class StockImpl implements IStockServices{
-	private IStockRepositoy stockR;
-	private IPrezzoRepository prezzoR;
-	private IValidationServices msgS;
+	private final IStockRepositoy stockR;
+	private final IPrezzoRepository prezzoR;
+	private final IValidationServices msgS;
 	
-	
-	public StockImpl(IStockRepositoy stockR, IPrezzoRepository prezzoR, IValidationServices msgS) {
-		super();
-		this.stockR = stockR;
-		this.prezzoR = prezzoR;
-		this.msgS = msgS;
-	}
 	
 	@Transactional (rollbackFor = Exception.class)
 	@Override

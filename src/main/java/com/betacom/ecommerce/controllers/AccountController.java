@@ -18,17 +18,16 @@ import com.betacom.ecommerce.response.Response;
 import com.betacom.ecommerce.services.interfaces.IAccountServices;
 import com.betacom.ecommerce.services.interfaces.IValidationServices;
 
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("rest/account")
 public class AccountController {
 
-	private IAccountServices accS;
-	private IValidationServices validS;
+	private final IAccountServices accS;
+	private final IValidationServices validS;
 
-	public AccountController(IAccountServices accS, IValidationServices validS) {
-		this.accS = accS;
-		this.validS = validS;
-	}
 
 	@PostMapping("/create")
 	public ResponseEntity<Response<String, Boolean>> create(@RequestBody(required = true) AccountReq req) {

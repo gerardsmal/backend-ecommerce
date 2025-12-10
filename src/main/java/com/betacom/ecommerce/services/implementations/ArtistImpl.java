@@ -23,22 +23,18 @@ import com.betacom.ecommerce.repositories.IFamigliaRepository;
 import com.betacom.ecommerce.services.interfaces.IArtistServices;
 import com.betacom.ecommerce.services.interfaces.IValidationServices;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+@RequiredArgsConstructor
 @Slf4j
 @Service
 public class ArtistImpl implements IArtistServices{
 
-	private IArtistRepository artS;
-	private IFamigliaRepository famS;
-	private IValidationServices  validS;
+	private final IArtistRepository artS;
+	private final IFamigliaRepository famS;
+	private final IValidationServices  validS;
 	
-	public ArtistImpl(IArtistRepository artS, IFamigliaRepository famS,IValidationServices  msgS) {
-		this.artS = artS;
-		this.famS = famS;
-		this.validS = msgS;
-	}
-
 	
 	@Transactional (rollbackFor = Exception.class)
 	@Override
@@ -46,10 +42,11 @@ public class ArtistImpl implements IArtistServices{
 		log.debug("create:" + req);
 		validS.checkNotNull(req.getNome(), "artist_no_name");
 		
-		if ( artS.existsByNome(req.getNome().trim())) {
-			throw new Exception(validS.getMessaggio("artist_fnd"));
-		} 
-			
+		Optional.of(req.getNome().trim())
+			.filter(nome -> !artS.existsByNome(nome))
+			.orElseThrow(() -> new Exception(validS.getMessaggio("artist_fnd")));
+	
+		
 		Artist artist = new Artist();
 		artist.setNome(req.getNome().trim());
 		if (req.getIdFamiglia() != null) {

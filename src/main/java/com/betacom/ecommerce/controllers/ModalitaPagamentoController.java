@@ -10,8 +10,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.betacom.ecommerce.response.Response;
 import com.betacom.ecommerce.services.interfaces.IModalitaPagamentoServices;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+@RequiredArgsConstructor
 @Slf4j
 @RestController
 @RequestMapping("rest/pagamento")
@@ -19,10 +21,6 @@ public class ModalitaPagamentoController {
 
 	private final IModalitaPagamentoServices pagaS;
 
-	public ModalitaPagamentoController(IModalitaPagamentoServices pagaS) {
-		this.pagaS = pagaS;
-	}
-	
 	
 	
 	@GetMapping("/list")
