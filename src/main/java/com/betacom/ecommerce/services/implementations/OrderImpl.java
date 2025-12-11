@@ -97,7 +97,7 @@ public class OrderImpl implements IOrderServices{
 		
 		order.setDataOrdine(LocalDate.now());
 		
-		order.setNumeroOrdine(0L);  // set numero provisorio 
+		order.setNumeroOrdine(countS.nextOrderProvisaryNumber());  // set numero provisorio 
 		order.setSpedizione(spedi);
 		order.setModalitaPagamento(modalita);
 		

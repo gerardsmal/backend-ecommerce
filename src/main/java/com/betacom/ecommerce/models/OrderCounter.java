@@ -19,5 +19,9 @@ public class OrderCounter {
 	@Column (name="current_value",
 			nullable = true)
 	private Long currentValue;
-	
+
+	@Column (name="provisary_value",
+			nullable = true)
+	private Long provisaryValue;
+
 }
