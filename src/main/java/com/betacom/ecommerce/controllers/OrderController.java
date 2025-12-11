@@ -182,11 +182,15 @@ public class OrderController {
 	}
 	
 	@GetMapping("/list")
-	public ResponseEntity<Object> list(@RequestParam (required = true) Integer id){	
+	public ResponseEntity<Object> list(
+			@RequestParam (required = true) Integer id,
+			@RequestParam (required = false) String product,
+			@RequestParam (required = false) String artist,
+			@RequestParam (required = false) String genere){	
 		Object r = new Object();
 		HttpStatus status = HttpStatus.OK;
 		try {
-			r=orderS.listByAccountId(id);
+			r=orderS.listByAccountId(id, product, artist, genere);
 		} catch (Exception e) {
 			r=e.getMessage();
 			status = HttpStatus.BAD_REQUEST;

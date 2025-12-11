@@ -201,12 +201,17 @@ public class OrderImpl implements IOrderServices{
 
 
 	@Override
-	public List<OrderDTO> listByAccountId(Integer id) throws Exception {
-		log.debug("listByAccountId:" + id);
-		Account ac = accountR.findById(id)
-				.orElseThrow(() -> new Exception(validS.getMessaggio("account_ntfnd")));
+	public List<OrderDTO> listByAccountId(Integer id,  String producName, String artist, String genere) throws Exception {
+		log.debug("listByAccountId: {} / {} / {}", id, producName, artist);
 		
-		return ac.getOrders().stream()
+		String prod = (producName == null) ? null : producName.toUpperCase();
+		String art = (artist == null) ? null : artist.toUpperCase();
+		String gen = (genere == null) ? null : genere.toUpperCase();
+		
+		
+		List<Order> lO = orderR.searchByFilter(id, prod, art, gen);
+		
+		return lO.stream()
 				.map(o -> OrderDTO.builder()
 						.numeroOrdine(o.getNumeroOrdine())
 						.dataOrdine(o.getDataOrdine())
@@ -224,7 +229,8 @@ public class OrderImpl implements IOrderServices{
 	
 	@Override
 	public OrderDTO getLastOrdine(Integer id) throws Exception {
-		log.debug("listByAccountId:" + id);
+		log.debug("getLastOrdine: {} ", id);
+		
 		Account ac = accountR.findById(id)
 				.orElseThrow(() -> new Exception(validS.getMessaggio("account_ntfnd")));
 		
