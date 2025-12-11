@@ -29,5 +29,19 @@ public class OrderCounterImpl implements IOrderCounterServices{
 		
 		return next;
 	}
+	
+	@Transactional (rollbackFor = Exception.class)
+	@Override
+	public Long nextOrderProvisaryNumber() throws Exception {
+		OrderCounter counter = countR.findById(1)
+				.orElseThrow(() -> new Exception("Counter table not initilized.."));
+		
+		Long prev = counter.getProvisaryValue() - 1;
+		counter.setProvisaryValue(prev);
+		countR.save(counter);
+		
+		
+		return prev;
+	}
 
 }
