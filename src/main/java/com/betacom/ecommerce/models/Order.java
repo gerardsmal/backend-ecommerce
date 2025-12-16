@@ -45,7 +45,7 @@ public class Order {
 	@Column (name="numero_ordine",
 			unique=true,
 			nullable = false)
-	private Long numeroOrdine;
+	private String numeroOrdine;
 
 	@ManyToOne
 	@JoinColumn (name="id_modalita")

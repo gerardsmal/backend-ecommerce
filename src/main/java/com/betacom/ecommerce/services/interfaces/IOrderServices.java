@@ -14,5 +14,5 @@ public interface IOrderServices {
 	Boolean getOrderStatus(Integer id) throws Exception;
 
 	List<OrderDTO> listByAccountId(Integer id, String productName, String artist, String genere) throws Exception;
-	OrderDTO getLastOrdine(Integer id) throws Exception;
+	OrderDTO getOrdineById(Integer id) throws Exception;
 }

@@ -12,7 +12,7 @@ import lombok.Setter;
 @Builder
 public class OrderDTO {
 	private Integer id;
-	private Long numeroOrdine;
+	private String numeroOrdine;
 	private LocalDate dataOrdine;
 	private LocalDate dataInvio;
 	private String status;

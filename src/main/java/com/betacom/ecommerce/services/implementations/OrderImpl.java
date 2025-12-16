@@ -1,5 +1,7 @@
 package com.betacom.ecommerce.services.implementations;
 
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
@@ -28,6 +30,7 @@ import com.betacom.ecommerce.repositories.IOrderItemsRepository;
 import com.betacom.ecommerce.repositories.IOrderRepository;
 import com.betacom.ecommerce.repositories.IRigaCarelloRepository;
 import com.betacom.ecommerce.repositories.ISpedizioneRepository;
+import com.betacom.ecommerce.services.interfaces.IExcelServices;
 import com.betacom.ecommerce.services.interfaces.IOrderCounterServices;
 import com.betacom.ecommerce.services.interfaces.IOrderServices;
 import com.betacom.ecommerce.services.interfaces.IUploadServices;
@@ -51,6 +54,7 @@ public class OrderImpl implements IOrderServices{
 	private final ISpedizioneRepository  spedR;
 	private final IModalidaPagamentoRepository  modR;
 	private final IUploadServices  uploadS;
+	private final IExcelServices excelS;
 	
 	@Override
 	public Boolean getOrderStatus(Integer id) throws Exception {
@@ -97,7 +101,7 @@ public class OrderImpl implements IOrderServices{
 		
 		order.setDataOrdine(LocalDate.now());
 		
-		order.setNumeroOrdine(countS.nextOrderProvisaryNumber());  // set numero provisorio 
+		order.setNumeroOrdine(countS.nextOrderProvisaryNumber(retrieveCurrentYear()));  // set numero provisorio 
 		order.setSpedizione(spedi);
 		order.setModalitaPagamento(modalita);
 		
@@ -186,9 +190,9 @@ public class OrderImpl implements IOrderServices{
 			throw new Exception(validS.getMessaggio("order_status_invalid"));
 		}
 		
-		order.setNumeroOrdine(countS.nextOrderNumber());
+		order.setNumeroOrdine(countS.nextOrderNumber(retrieveCurrentYear()));
 		order.setDataInvio(LocalDate.now());
-		orderR.save(order);
+		int lastOder = orderR.save(order).getId();
 		
 		rigaCarelloR.removeItems(order.getAccount().getCarello().getId());
 		log.debug("After remove riga carello");
@@ -196,7 +200,7 @@ public class OrderImpl implements IOrderServices{
 		updateCarelloStatus(order.getAccount().getCarello(), "carello");
 		log.debug("After update status carello");
 		
-		return getLastOrdine(req.getAccountID());
+		return getOrdineById(lastOder);
 	}
 
 
@@ -228,15 +232,14 @@ public class OrderImpl implements IOrderServices{
 	}
 	
 	@Override
-	public OrderDTO getLastOrdine(Integer id) throws Exception {
-		log.debug("getLastOrdine: {} ", id);
+	public OrderDTO getOrdineById(Integer id ) throws Exception {
+		log.debug("getOrdineById: {} ", id);
 		
-		Account ac = accountR.findById(id)
-				.orElseThrow(() -> new Exception(validS.getMessaggio("account_ntfnd")));
 		
-		Order o = ac.getOrders().getFirst();
+		Order o = orderR.findById(id)
+				.orElseThrow(() -> new Exception(validS.getMessaggio("order_ntfnd")));
 		
-		return OrderDTO.builder()
+		OrderDTO result = OrderDTO.builder()
 						.numeroOrdine(o.getNumeroOrdine())
 						.dataOrdine(o.getDataOrdine())
 						.dataInvio(o.getDataInvio())
@@ -248,9 +251,23 @@ public class OrderImpl implements IOrderServices{
 						.modalitaPagamento(o.getModalitaPagamento().getTipo())
 						.riga(buildRigaOrdine(o.getOrderItems()))
 						.build();
+		
+		sendOrdineMail(result);
+		
+		return result;
 	}
 	
 
+	private void sendOrdineMail(OrderDTO order) throws Exception {
+		log.debug("sendOrdineMail");
+		byte[] r = excelS.exportOrder(order);
+		
+		Path path = Path.of("ordine-test.xlsx");
+		Files.write(path, r);
+
+	}
+	
+	
 
 	private SpedizioneDTO buildSprdizione(Spedizione s) {
 		return SpedizioneDTO.builder()
@@ -259,7 +276,7 @@ public class OrderImpl implements IOrderServices{
 				.nome(s.getNome())
 				.cognome(s.getCognome())
 				.via(s.getVia())
-				.cognome(s.getCommune())
+				.commune(s.getCommune())
 				.cap(s.getCap())
 				.build();
 	}
@@ -287,6 +304,9 @@ public class OrderImpl implements IOrderServices{
 		carelloR.save(carello);
 	}
 
-
+	private int retrieveCurrentYear() {
+		LocalDate date = LocalDate.now();
+		return date.getYear();
+	}
 
 }

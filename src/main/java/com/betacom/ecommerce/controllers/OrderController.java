@@ -198,12 +198,12 @@ public class OrderController {
 		return ResponseEntity.status(status).body(r);
 	}
 	
-	@GetMapping("/lastOrder")
-	public ResponseEntity<Object> lastOrder(@RequestParam (required = true) Integer id){	
+	@GetMapping("/getById")
+	public ResponseEntity<Object> getById(@RequestParam (required = true) Integer id){	
 		Object r = new Object();
 		HttpStatus status = HttpStatus.OK;
 		try {
-			r=orderS.getLastOrdine(id);
+			r=orderS.getOrdineById(id);
 		} catch (Exception e) {
 			r=e.getMessage();
 			status = HttpStatus.BAD_REQUEST;
