@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.betacom.ecommerce.dto.input.AccountReq;
 import com.betacom.ecommerce.dto.input.SigninReq;
+import com.betacom.ecommerce.dto.input.changePwdReq;
 import com.betacom.ecommerce.dto.output.AccountDTO;
 import com.betacom.ecommerce.dto.output.CarelloDTO;
 import com.betacom.ecommerce.dto.output.CarelloRigaDTO;
@@ -206,6 +207,27 @@ public class AccountImpl implements IAccountServices{
 	}
 
 	@Override
+	public void changePwd(changePwdReq req) throws Exception {
+		log.debug("login:" + req);
+		Account user = accR.findById(req.getId())
+				.orElseThrow(() -> new Exception(validS.getMessaggio("account_invalid")));
+		
+		if (!encoder.matches(req.getOldPwd(), user.getPwd()))
+			throw new Exception(validS.getMessaggio("account_pwd_invalid"));
+		
+		Optional.ofNullable(req.getNewPwd())
+		.ifPresentOrElse(pwd -> {
+			validS.validatePassword(pwd);	
+			user.setPwd(encoder.encode(req.getNewPwd()));
+		}, () -> { 
+			throw new EcommerceException(validS.getMessaggio("account_no_newpwd"));
+		});
+		
+		accR.save(user);
+	}
+
+	
+	@Override
 	public List<AccountDTO> list(
 			Integer id,
 			String nome,
@@ -305,6 +327,7 @@ public class AccountImpl implements IAccountServices{
 			return null;
 		}	
 	}
+
 
 
 

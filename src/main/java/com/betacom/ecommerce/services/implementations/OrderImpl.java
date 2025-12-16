@@ -9,6 +9,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.betacom.ecommerce.dto.input.MailReq;
 import com.betacom.ecommerce.dto.input.OrderReq;
 import com.betacom.ecommerce.dto.output.OrderDTO;
 import com.betacom.ecommerce.dto.output.OrderItemDTO;
@@ -31,6 +32,7 @@ import com.betacom.ecommerce.repositories.IOrderRepository;
 import com.betacom.ecommerce.repositories.IRigaCarelloRepository;
 import com.betacom.ecommerce.repositories.ISpedizioneRepository;
 import com.betacom.ecommerce.services.interfaces.IExcelServices;
+import com.betacom.ecommerce.services.interfaces.IMailServices;
 import com.betacom.ecommerce.services.interfaces.IOrderCounterServices;
 import com.betacom.ecommerce.services.interfaces.IOrderServices;
 import com.betacom.ecommerce.services.interfaces.IUploadServices;
@@ -55,6 +57,7 @@ public class OrderImpl implements IOrderServices{
 	private final IModalidaPagamentoRepository  modR;
 	private final IUploadServices  uploadS;
 	private final IExcelServices excelS;
+	private final IMailServices mailS;
 	
 	@Override
 	public Boolean getOrderStatus(Integer id) throws Exception {
@@ -252,19 +255,34 @@ public class OrderImpl implements IOrderServices{
 						.riga(buildRigaOrdine(o.getOrderItems()))
 						.build();
 		
-		sendOrdineMail(result);
+		sendOrdineMail(result, o.getAccount());
 		
 		return result;
 	}
 	
 
-	private void sendOrdineMail(OrderDTO order) throws Exception {
+	private void sendOrdineMail(OrderDTO order, Account account) throws Exception {
 		log.debug("sendOrdineMail");
 		byte[] r = excelS.exportOrder(order);
 		
-		Path path = Path.of("ordine-test.xlsx");
-		Files.write(path, r);
-
+//		Path path = Path.of("ordine-test.xlsx");
+//		Files.write(path, r);
+		StringBuilder body = new StringBuilder();
+		body.append("<h1>DISCI SHOP</h1><br><br>");
+		body.append("Buongiorno ");
+		body.append(account.getNome());
+		body.append("<br><br>");
+		body.append("in allegato potete trovare l'ordine");
+		body.append("<br><br>Il team Dischi shop <br><br>");
+		
+		mailS.sendMailWithExcel(MailReq.builder()
+				.to(account.getEmail())
+				.oggetto("Detaglio ordine")
+				.body(body.toString())
+				.attachment(r)
+				.build()
+				);
+		
 	}
 	
 	
