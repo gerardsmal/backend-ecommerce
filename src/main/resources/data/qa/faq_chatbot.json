@@ -1,0 +1,207 @@
+[
+  {
+    "id": "site-purpose",
+    "question": "Qual è lo scopo del sito?",
+    "altQuestions": [
+      "A cosa serve il sito?",
+      "Che cosa posso fare su questo sito?",
+      "Di cosa si occupa il sito?",
+      "Che tipo di sito è questo?",
+      "Che cosa vendete qui?",
+      "È un negozio online?",
+      "Posso comprare musica su questo sito?",
+      "Che contenuti trovo sul sito?",
+      "Qual è la funzione del sito?",
+      "Che servizi offre questo sito?"
+    ],
+    "keywords": ["sito", "scopo", "funzione", "ecommerce", "dischi", "cd", "vinile", "musica", "mp3", "mp4", "negozio"],
+    "answer": "Il sito è un e-commerce di dischi (CD, vinile) e contenuti digitali (mp3, mp4)."
+  },
+  {
+    "id": "site-access",
+    "question": "Come si accede al sito?",
+    "altQuestions": [
+      "Come entro nel sito?",
+      "Come faccio ad accedere al sito?",
+      "Cosa vedo quando apro il sito?",
+      "Cosa trovo nella home page?",
+      "Dove vedo la lista delle compilation?",
+      "Dove si trovano i prodotti?",
+      "Come inizio a usare il sito?"
+    ],
+    "keywords": ["accesso", "login", "homepage", "home page", "entrare", "apertura sito", "compilation"],
+    "answer": "Dalla home page è disponibile la lista delle compilation acquistabili."
+  },
+  {
+    "id": "registration-required",
+    "question": "L’accesso al sito richiede una registrazione?",
+    "altQuestions": [
+      "Devo registrarmi per usare il sito?",
+      "Serve un account per entrare nel sito?",
+      "Posso acquistare senza registrarmi?",
+      "È obbligatorio creare un account?",
+      "Devo essere registrato per comprare?",
+      "Devo registrarmi prima di navigare?"
+    ],
+    "keywords": ["registrazione", "account", "obbligatorio", "creare account", "login", "iscrizione"],
+    "answer": "L’accesso non richiede obbligatoriamente una registrazione. La registrazione verrà effettuata al momento dell’acquisto."
+  },
+  {
+    "id": "registration-site",
+    "question": "La registrazione si fa direttamente sul sito?",
+    "altQuestions": [
+      "Come mi registro sul sito?",
+      "Dove posso registrarmi?",
+      "Come creo un nuovo account?",
+      "Come faccio a iscrivermi?",
+      "Come funziona la registrazione?",
+      "C'è un modulo di registrazione?"
+    ],
+    "keywords": ["registrazione", "nuovo utente", "creare account", "iscrizione"],
+    "answer": "Sì. Durante l’acquisto, se sei un nuovo utente, potrai registrarti direttamente."
+  },
+  {
+    "id": "registration-data",
+    "question": "Di quali dati ho bisogno per registrarmi?",
+    "altQuestions": [
+      "Che dati servono per registrarsi?",
+      "Che informazioni devo inserire per registrarmi?",
+      "Che cosa serve per creare l'account?",
+      "Quali dati personali devo fornire?",
+      "Che informazioni richiede il sito?"
+    ],
+    "keywords": ["registrazione", "dati personali", "nome", "cognome", "email", "telefono", "indirizzo", "password", "username"],
+    "answer": "Servono nome, cognome, un indirizzo e-mail valido, il sesso, eventualmente il numero di telefono e l'indirizzo postale. Inoltre devi scegliere uno username e una password."
+  },
+  {
+    "id": "username-unique",
+    "question": "Il mio username è univoco?",
+    "altQuestions": [
+      "Lo username deve essere unico?",
+      "Posso avere lo stesso username di un altro?",
+      "Cosa succede se scelgo uno username già usato?",
+      "Il nome utente può essere duplicato?",
+      "Come scelgo il mio username?"
+    ],
+    "keywords": ["username", "nome utente", "univoco", "duplicato", "account"],
+    "answer": "Sì, lo username è univoco. Se è già in uso, il sistema ti segnalerà di sceglierne uno diverso."
+  },
+  {
+    "id": "support-hours",
+    "question": "Quali sono gli orari dell’assistenza?",
+    "altQuestions": [
+      "Quando è aperta l’assistenza?",
+      "Quali sono gli orari del supporto?",
+      "Quando posso contattare l’assistenza?",
+      "In che orari risponde il servizio clienti?",
+      "Quali sono gli orari di apertura?"
+    ],
+    "keywords": ["orari", "assistenza", "supporto", "servizio clienti"],
+    "answer": "L’assistenza è disponibile tutti i giorni dalle 8:00 alle 18:00, esclusa la domenica."
+  },
+  {
+    "id": "returns",
+    "question": "Posso fare il reso in caso di errore da parte mia?",
+    "altQuestions": [
+      "Posso restituire il prodotto?",
+      "Come funziona il reso?",
+      "Entro quanto posso fare il reso?",
+      "È possibile fare il reso?",
+      "Posso fare un reso se ho sbagliato ordine?",
+      "Si può annullare un acquisto dopo aver sbagliato?"
+    ],
+    "keywords": ["reso", "restituzione", "ordine sbagliato", "errore", "rimborsi"],
+    "answer": "Sì, il reso è gratuito entro un mese dall’acquisto. Dopo un mese occorre contattare l’assistenza."
+  },
+  {
+    "id": "payment-methods",
+    "question": "Quali tipi di pagamento accettate?",
+    "altQuestions": [
+      "Che metodi di pagamento sono disponibili?",
+      "Posso pagare con carta?",
+      "Accettate PayPal?",
+      "Posso pagare con carta bancaria?",
+      "Quali forme di pagamento posso usare?"
+    ],
+    "keywords": ["pagamento", "paypal", "carta", "metodi pagamento", "debito", "credito"],
+    "answer": "Accettiamo pagamenti tramite PayPal e carta bancaria."
+  },
+  {
+    "id": "payment-when",
+    "question": "Quando devo specificare la modalità di pagamento?",
+    "altQuestions": [
+      "In che momento inserisco la carta?",
+      "Quando scelgo PayPal?",
+      "Quando viene richiesto il metodo di pagamento?",
+      "A che punto del processo si paga?",
+      "Quando avviene il pagamento?"
+    ],
+    "keywords": ["pagamento", "checkout", "acquisto", "ordine"],
+    "answer": "La modalità di pagamento viene specificata al momento dell’acquisto."
+  },
+  {
+    "id": "payment-storage",
+    "question": "Le modalità di pagamento vengono registrate?",
+    "altQuestions": [
+      "Salvate i dati della carta?",
+      "Conservate i dati di pagamento?",
+      "Il sito memorizza il metodo di pagamento?",
+      "I dati della carta restano salvati?",
+      "Registrate i metodi di pagamento?"
+    ],
+    "keywords": ["pagamento", "privacy", "sicurezza", "dati carta", "memorizzazione"],
+    "answer": "No. Per la tua sicurezza non memorizziamo i dati di pagamento."
+  },
+  {
+    "id": "account-delete",
+    "question": "Posso cancellare il mio account?",
+    "altQuestions": [
+      "Come cancello il mio account?",
+      "Posso eliminare il mio profilo?",
+      "Come rimuovo il mio account dal sito?",
+      "Cancellazione account",
+      "È possibile eliminare l'account?"
+    ],
+    "keywords": ["account", "cancellazione", "eliminare account", "profilo"],
+    "answer": "Sì, il tuo account può essere cancellato in qualsiasi momento."
+  },
+  {
+    "id": "order-delete",
+    "question": "Posso cancellare un ordine?",
+    "altQuestions": [
+      "Come annullo un ordine?",
+      "Posso annullare un acquisto?",
+      "Posso cancellare un ordine prima del pagamento?",
+      "Si può annullare un ordine?",
+      "Come cancello un ordine fatto per errore?"
+    ],
+    "keywords": ["ordine", "cancellare ordine", "annullare", "acquisto", "errore"],
+    "answer": "Un ordine è cancellabile finché il pagamento non è stato effettuato."
+  },
+  {
+    "id": "music-types",
+    "question": "Che tipo di musica posso trovare sul sito?",
+    "altQuestions": [
+      "Che generi musicali vendete?",
+      "Avete musica di tutti i tipi?",
+      "Che musica avete?",
+      "Trovo tutti i generi musicali?",
+      "Quali generi musicali sono disponibili?"
+    ],
+    "keywords": ["musica", "generi musicali", "catalogo", "dischi", "vendita musica"],
+    "answer": "Sono disponibili tutti i generi musicali."
+  },
+  {
+    "id": "order-recovery",
+    "question": "Posso recuperare i miei ordini?",
+    "altQuestions": [
+      "Dove trovo i miei ordini?",
+      "Posso vedere gli ordini precedenti?",
+      "Come recupero uno storico ordini?",
+      "C'è una pagina degli ordini?",
+      "Come faccio a rivedere i miei acquisti?"
+    ],
+    "keywords": ["ordini", "storico", "cronologia", "acquisti", "account"],
+    "answer": "Sì. Se sei loggato, puoi accedere alla funzione che permette di recuperare i tuoi ordini."
+  }
+]
