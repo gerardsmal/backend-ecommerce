@@ -28,9 +28,9 @@ public class UploadImpl implements IUploadServices{
 	private final IValidationServices validS;
 	private final IProdottoRepository prodR;
 	
-	public UploadImpl(@Value("${app.upload.dir:uploads}") String uploadDir,
+	public UploadImpl(@Value("${app.upload.dir:uploads}") String uploadDir,  // valore per default della value
 			IValidationServices validS,
-			IProdottoRepository prodR) {  // valore per default della value
+			IProdottoRepository prodR) {  
 	        this.uploadPath = Paths.get(uploadDir).toAbsolutePath().normalize(); // transform relative path in absolute  path
 	        this.validS = validS;
 	        this.prodR = prodR;

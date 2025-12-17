@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.betacom.ecommerce.dto.input.AccountReq;
 import com.betacom.ecommerce.dto.input.SigninReq;
+import com.betacom.ecommerce.dto.input.changePwdReq;
 import com.betacom.ecommerce.response.Response;
 import com.betacom.ecommerce.services.interfaces.IAccountServices;
 import com.betacom.ecommerce.services.interfaces.IValidationServices;
@@ -53,6 +54,22 @@ public class AccountController {
 	    try {
 	        accS.update(req);
 	        response.setMsg(validS.getMessaggio("updated"));
+	    } catch (Exception e) {
+	        response.setMsg(e.getMessage());
+	        status = HttpStatus.BAD_REQUEST;
+	    }
+
+	    return ResponseEntity.status(status).body(response);
+	}
+	
+	@PutMapping("/changepwd")
+	public ResponseEntity<Response<String, Boolean>> changepwd(@RequestBody(required = true) changePwdReq req) {
+		Response<String, Boolean> response = new Response<String, Boolean>();
+	    HttpStatus status = HttpStatus.OK;
+
+	    try {
+	        accS.changePwd(req);
+	        response.setMsg(validS.getMessaggio("account_pwd_updated"));
 	    } catch (Exception e) {
 	        response.setMsg(e.getMessage());
 	        status = HttpStatus.BAD_REQUEST;

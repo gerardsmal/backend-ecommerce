@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.betacom.ecommerce.dto.input.AccountReq;
+import com.betacom.ecommerce.dto.input.MailReq;
 import com.betacom.ecommerce.dto.input.SigninReq;
 import com.betacom.ecommerce.dto.input.changePwdReq;
 import com.betacom.ecommerce.dto.output.AccountDTO;
@@ -24,6 +25,7 @@ import com.betacom.ecommerce.models.Prezzo;
 import com.betacom.ecommerce.models.RigaCarello;
 import com.betacom.ecommerce.repositories.IAccountRepository;
 import com.betacom.ecommerce.services.interfaces.IAccountServices;
+import com.betacom.ecommerce.services.interfaces.IMailServices;
 import com.betacom.ecommerce.services.interfaces.IUploadServices;
 import com.betacom.ecommerce.services.interfaces.IValidationServices;
 
@@ -39,11 +41,13 @@ public class AccountImpl implements IAccountServices{
 	private final IValidationServices  validS;
 	private final PasswordEncoder    encoder;
 	private final IUploadServices  uploadS;
+	private final IMailServices  mailS;
 
 	private static String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
 	private static String capRegex = "^[0-9]{5}$";
 	private static String telefonoRegex = "^(\\+39)?\\s?(3\\d{2}|0\\d{1,3})\\s?\\d{5,10}$";
 	
+	@Transactional (rollbackFor = Exception.class)
 	@Override
 	public void create(AccountReq req) throws Exception {
 		log.debug("create:" + req);
@@ -91,7 +95,8 @@ public class AccountImpl implements IAccountServices{
 		accR.save(acc);
 		
 	}
-
+	
+	@Transactional (rollbackFor = Exception.class)
 	@Override
 	public void update(AccountReq req) throws Exception {
 		log.debug("update:" + req);
@@ -170,12 +175,13 @@ public class AccountImpl implements IAccountServices{
 				.orElseThrow(() -> new Exception(validS.getMessaggio("account_ntfnd")));
 
 	}
-	
+	@Transactional (rollbackFor = Exception.class)
 	private Account deleteAccount(Account acc) {
 		accR.delete(acc);
 		return acc;
 	}
 
+	@Transactional (rollbackFor = Exception.class)
 	private Account disableAccount(Account acc) {
 		acc.setStatus(false);
 		return accR.save(acc);
@@ -206,6 +212,7 @@ public class AccountImpl implements IAccountServices{
 				.build();
 	}
 
+	@Transactional (rollbackFor = Exception.class)
 	@Override
 	public void changePwd(changePwdReq req) throws Exception {
 		log.debug("login:" + req);
@@ -224,6 +231,17 @@ public class AccountImpl implements IAccountServices{
 		});
 		
 		accR.save(user);
+		
+		StringBuilder body = new StringBuilder();
+		body.append("<h2>DISCI SHOP</h2><br><br>");
+		body.append("Buongiorno ");
+		body.append(user.getNome());
+		body.append("<br><br>");
+		body.append("<br>Tuo password di acesso al sito é stato cambiato<br>");
+		body.append("<br>La tua nuova password é:" + req.getNewPwd() +"<br>");
+		body.append("<br><br>Il team Dischi shop <br><br>");
+
+		sendMail(user, "Cambiamento Password", body.toString());
 	}
 
 	
@@ -328,7 +346,17 @@ public class AccountImpl implements IAccountServices{
 		}	
 	}
 
+	private void sendMail(Account account, String oggetto, String body) throws Exception{
+		
+		mailS.sendMail(MailReq.builder()
+				.to(account.getEmail())
+				.oggetto(oggetto)
+				.body(body)
+				.build()
+				);
+		
 
+	}
 
 
 
