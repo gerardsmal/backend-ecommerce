@@ -23,6 +23,7 @@ public class AccountDTO {
 	private String userName;
 	private String  role;
 	private String status;  // true attivo false non attivo
+	private Boolean attivate;
 	private LocalDate dataCreazione;
 	private CarelloDTO carello;
 }

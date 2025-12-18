@@ -14,4 +14,5 @@ public class SigninDTO {
 	private Integer orderSize;
 	private String userName;
 	private String role;
+	private Boolean validate;
 }

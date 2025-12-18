@@ -44,7 +44,10 @@ public class Account {
 			  length = 100)
 	private String cognome;
 
-
+	@Column (name="email_validation",
+			nullable= false)
+	private Boolean validate;
+	
 	@Column (name="email",
 			  nullable = false,
 			  length = 100)

@@ -21,4 +21,5 @@ public class AccountReq {
 	private String pwd;	
 	private String role;
 	private Boolean status;
+	private Boolean validate;
 }

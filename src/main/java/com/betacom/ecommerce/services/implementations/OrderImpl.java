@@ -265,8 +265,6 @@ public class OrderImpl implements IOrderServices{
 		log.debug("sendOrdineMail");
 		byte[] r = excelS.exportOrder(order);
 		
-//		Path path = Path.of("ordine-test.xlsx");
-//		Files.write(path, r);
 		StringBuilder body = new StringBuilder();
 		body.append("<h1>DISCI SHOP</h1><br><br>");
 		body.append("Buongiorno ");
@@ -284,8 +282,6 @@ public class OrderImpl implements IOrderServices{
 				);
 		
 	}
-	
-	
 
 	private SpedizioneDTO buildSprdizione(Spedizione s) {
 		return SpedizioneDTO.builder()
@@ -316,7 +312,7 @@ public class OrderImpl implements IOrderServices{
 				.toList();
 	
 	}
-	
+	@Transactional (rollbackFor = Exception.class)
 	private void updateCarelloStatus(Carello carello, String status) {
 		carello.setStato(StatoCarello.valueOf(status));
 		carelloR.save(carello);

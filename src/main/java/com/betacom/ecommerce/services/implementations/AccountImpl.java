@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,6 +47,9 @@ public class AccountImpl implements IAccountServices{
 	private static String emailRegex = "^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+$";
 	private static String capRegex = "^[0-9]{5}$";
 	private static String telefonoRegex = "^(\\+39)?\\s?(3\\d{2}|0\\d{1,3})\\s?\\d{5,10}$";
+	
+	@Value("${validation.mail}")
+	private String validationMail;
 	
 	@Transactional (rollbackFor = Exception.class)
 	@Override
@@ -92,8 +96,11 @@ public class AccountImpl implements IAccountServices{
 		
 		acc.setSesso(req.getSesso());
 		acc.setStatus(true);
+		acc.setValidate(false);
 		accR.save(acc);
 		
+		if (!acc.getValidate()) sendMailValidation(acc);
+			
 	}
 	
 	@Transactional (rollbackFor = Exception.class)
@@ -110,6 +117,7 @@ public class AccountImpl implements IAccountServices{
 			.ifPresent(email -> {
 				validS.validateWithRegex(email, emailRegex, "account_email_ko");
 				acc.setEmail(email);
+				acc.setValidate(false);
 			});
 
 		Optional.ofNullable(req.getCommune()).ifPresent(acc::setCommune);
@@ -160,7 +168,7 @@ public class AccountImpl implements IAccountServices{
 		
 		accR.save(acc);
 		
-
+		if (!acc.getValidate()) sendMailValidation(acc);
 		
 	}
 	
@@ -209,6 +217,7 @@ public class AccountImpl implements IAccountServices{
 				: user.getOrders().size())
 				.userName(user.getNome() + " " + user.getCognome())
 				.role(user.getRole().toString())
+				.validate(user.getValidate())
 				.build();
 	}
 
@@ -243,6 +252,21 @@ public class AccountImpl implements IAccountServices{
 
 		sendMail(user, "Cambiamento Password", body.toString());
 	}
+
+	@Transactional (rollbackFor = Exception.class)
+	@Override
+	public void validateEmail(Integer id) throws Exception {
+		log.debug("validateEmail:" + id);
+		Account user = accR.findById(id)
+				.orElseThrow(() -> new Exception(validS.getMessaggio("account_invalid")));
+		
+		if (user.getValidate())
+			throw new Exception(validS.getMessaggio("account_validate_ko"));
+		
+		user.setValidate(true);
+		accR.save(user);
+	}
+
 
 	
 	@Override
@@ -358,6 +382,18 @@ public class AccountImpl implements IAccountServices{
 
 	}
 
+	private void sendMailValidation(Account acc) throws Exception{
+		StringBuilder body = new StringBuilder();
+		body.append("<h2>DISCI SHOP</h2><br><br>");
+		body.append("Buongiorno ");
+		body.append(acc.getNome());
+		body.append("<br><br>");
+		body.append("<br>Per validare tuo mail va sull'URL");
+		body.append("<br><a>"+ validationMail + acc.getId() + "</a><br>");
+		body.append("<br><br>Il team Dischi shop <br><br>");
+
+		sendMail(acc, "Validazione email", body.toString());
+	}
 
 
 }

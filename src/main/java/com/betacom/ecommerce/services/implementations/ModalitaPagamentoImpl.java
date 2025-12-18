@@ -3,6 +3,7 @@ package com.betacom.ecommerce.services.implementations;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.betacom.ecommerce.dto.output.ModalitaPagamentoDTO;
 import com.betacom.ecommerce.models.ModalitaPagamento;
@@ -34,7 +35,7 @@ public class ModalitaPagamentoImpl implements IModalitaPagamentoServices{
 						).toList();
 	}
 
-
+	@Transactional (rollbackFor = Exception.class)
 	@Override
 	public ModalitaPagamentoDTO getModalita(Integer id) throws Exception {
 		log.debug("getModalita: {}", id);

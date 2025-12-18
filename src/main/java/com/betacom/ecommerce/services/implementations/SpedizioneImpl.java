@@ -93,6 +93,8 @@ public class SpedizioneImpl implements ISpedizioneServices{
 		
 		return spd;
 	}
+	
+	@Transactional (rollbackFor = Exception.class)
 	@Override
 	public void update(SpedizioneReq req) throws Exception {
 		log.debug("updateSpedizione {}", req);
@@ -116,6 +118,7 @@ public class SpedizioneImpl implements ISpedizioneServices{
 
 	}
 
+	@Transactional (rollbackFor = Exception.class)
 	@Override
 	public void delete(Integer spedizioneID) throws Exception {
 		log.debug("delete {}", spedizioneID);
