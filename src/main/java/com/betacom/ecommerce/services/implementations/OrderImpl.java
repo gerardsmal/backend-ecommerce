@@ -263,24 +263,27 @@ public class OrderImpl implements IOrderServices{
 
 	private void sendOrdineMail(OrderDTO order, Account account) throws Exception {
 		log.debug("sendOrdineMail");
-		byte[] r = excelS.exportOrder(order);
 		
-		StringBuilder body = new StringBuilder();
-		body.append("<h1>DISCI SHOP</h1><br><br>");
-		body.append("Buongiorno ");
-		body.append(account.getNome());
-		body.append("<br><br>");
-		body.append("in allegato potete trovare l'ordine");
-		body.append("<br><br>Il team Dischi shop <br><br>");
-		
-		mailS.sendMailWithExcel(MailReq.builder()
-				.to(account.getEmail())
-				.oggetto("Detaglio ordine")
-				.body(body.toString())
-				.attachment(r)
-				.build()
-				);
-		
+		if (account.getValidate()) {
+			byte[] r = excelS.exportOrder(order);
+			
+			StringBuilder body = new StringBuilder();
+			body.append("<h1>DISCI SHOP</h1><br><br>");
+			body.append("Buongiorno ");
+			body.append(account.getNome());
+			body.append("<br><br>");
+			body.append("in allegato potete trovare l'ordine");
+			body.append("<br><br>Il team Dischi shop <br><br>");
+			
+			mailS.sendMailWithExcel(MailReq.builder()
+					.to(account.getEmail())
+					.oggetto("Detaglio ordine")
+					.body(body.toString())
+					.attachment(r)
+					.build()
+					);
+						
+		}
 	}
 
 	private SpedizioneDTO buildSprdizione(Spedizione s) {

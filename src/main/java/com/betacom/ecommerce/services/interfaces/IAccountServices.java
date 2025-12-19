@@ -16,7 +16,9 @@ public interface IAccountServices {
 	void update (AccountReq req) throws  Exception;
 	void delete (Integer id) throws  Exception;
 	void changePwd (changePwdReq req) throws  Exception;
+	
 	void validateEmail (Integer id) throws Exception;
+	void sendValidationMail (Integer id) throws Exception;
 	
 	SigninDTO login(SigninReq req) throws Exception;
 	

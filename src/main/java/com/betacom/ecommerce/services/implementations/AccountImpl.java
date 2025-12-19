@@ -217,7 +217,7 @@ public class AccountImpl implements IAccountServices{
 				: user.getOrders().size())
 				.userName(user.getNome() + " " + user.getCognome())
 				.role(user.getRole().toString())
-				.validate(user.getValidate())
+				.activate(user.getValidate())
 				.build();
 	}
 
@@ -267,6 +267,15 @@ public class AccountImpl implements IAccountServices{
 		accR.save(user);
 	}
 
+	@Override
+	public void sendValidationMail(Integer id) throws Exception {
+		log.debug("sendValidationMail:" + id);
+		Account user = accR.findById(id)
+				.orElseThrow(() -> new Exception(validS.getMessaggio("account_invalid")));
+		
+		sendMailValidation(user);
+		
+	}
 
 	
 	@Override
@@ -294,6 +303,7 @@ public class AccountImpl implements IAccountServices{
 						.cognome(a.getCognome())
 						.sesso(a.getSesso() ? "M" :"F" )
 						.telefono(a.getTelefono())
+						.attivate(a.getValidate())
 						.via(a.getVia())
 						.commune(a.getCommune())
 						.cap(a.getCap())
@@ -321,6 +331,7 @@ public class AccountImpl implements IAccountServices{
 				.cognome(a.getCognome())
 				.sesso(a.getSesso() ? "M" :"F" )
 				.telefono(a.getTelefono())
+				.attivate(a.getValidate())
 				.via(a.getVia())
 				.commune(a.getCommune())
 				.cap(a.getCap())
@@ -371,13 +382,15 @@ public class AccountImpl implements IAccountServices{
 	}
 
 	private void sendMail(Account account, String oggetto, String body) throws Exception{
-		
-		mailS.sendMail(MailReq.builder()
-				.to(account.getEmail())
-				.oggetto(oggetto)
-				.body(body)
-				.build()
-				);
+		if (account.getValidate()) {
+			mailS.sendMail(MailReq.builder()
+					.to(account.getEmail())
+					.oggetto(oggetto)
+					.body(body)
+					.build()
+					);
+			
+		}
 		
 
 	}
@@ -394,6 +407,7 @@ public class AccountImpl implements IAccountServices{
 
 		sendMail(acc, "Validazione email", body.toString());
 	}
+
 
 
 }

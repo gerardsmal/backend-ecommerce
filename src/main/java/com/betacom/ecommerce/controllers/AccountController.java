@@ -158,4 +158,21 @@ public class AccountController {
 
 	}
 
+	@GetMapping("/sendValidation")
+	public ResponseEntity<Response<String, Boolean>> sendValidation( @RequestParam (required = false) Integer id){	
+		
+		HttpStatus status = HttpStatus.OK;
+		Response<String, Boolean> r = new Response<String, Boolean>();
+		
+		try {
+			accS.sendValidationMail(id);
+			r.setMsg("OK");
+		} catch (Exception e) {
+			r.setMsg(e.getMessage());
+			status = HttpStatus.BAD_REQUEST;
+		}
+		return ResponseEntity.status(status).body(r);
+
+	}
+
 }
