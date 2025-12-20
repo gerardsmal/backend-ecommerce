@@ -241,14 +241,29 @@ public class AccountImpl implements IAccountServices{
 		
 		accR.save(user);
 		
+		
 		StringBuilder body = new StringBuilder();
-		body.append("<h2>DISCI SHOP</h2><br><br>");
-		body.append("Buongiorno ");
-		body.append(user.getNome());
-		body.append("<br><br>");
-		body.append("<br>Tuo password di acesso al sito é stato cambiato<br>");
-		body.append("<br>La tua nuova password é:" + req.getNewPwd() +"<br>");
-		body.append("<br><br>Il team Dischi shop <br><br>");
+		body.append("<div style='font-family:Arial,sans-serif'>");
+
+		body.append("Buongiorno <strong>")
+		    .append(user.getNome())
+		    .append("</strong><br><br>");
+
+		body.append("La tua password di accesso al sito è stata cambiata.<br>");
+		body.append("<strong>Nuova password:</strong> ")
+		    .append(req.getNewPwd())
+		    .append("<br><br>");
+
+		body.append(
+				  "<img src='cid:logo' " +
+				  "style='width:180px; max-width:180px; height:auto; " +
+				  "display:block; margin:0 auto 20px auto;'>"
+				);
+
+
+		body.append("Il team <strong>Dischi Shop</strong><br><br>");
+		body.append("</div>");
+
 
 		sendMail(user, "Cambiamento Password", body.toString());
 	}
@@ -382,7 +397,6 @@ public class AccountImpl implements IAccountServices{
 	}
 
 	private void sendMail(Account account, String oggetto, String body) throws Exception{
-		if (account.getValidate()) {
 			mailS.sendMail(MailReq.builder()
 					.to(account.getEmail())
 					.oggetto(oggetto)
@@ -390,14 +404,14 @@ public class AccountImpl implements IAccountServices{
 					.build()
 					);
 			
-		}
-		
 
 	}
 
 	private void sendMailValidation(Account acc) throws Exception{
 		StringBuilder body = new StringBuilder();
-		body.append("<h2>DISCI SHOP</h2><br><br>");
+
+		body.append("<div style='font-family:Arial,sans-serif'>");
+
 		body.append("Buongiorno ");
 		body.append(acc.getNome());
 		body.append("<br><br>");
@@ -405,6 +419,17 @@ public class AccountImpl implements IAccountServices{
 		body.append("<br><a>"+ validationMail + acc.getId() + "</a><br>");
 		body.append("<br><br>Il team Dischi shop <br><br>");
 
+		body.append(
+				  "<img src='cid:logo' " +
+				  "style='width:180px; max-width:180px; height:auto; " +
+				  "display:block; margin:0 auto 20px auto;'>"
+				);
+
+
+		body.append("Il team <strong>Dischi Shop</strong><br><br>");
+		body.append("</div>");
+
+	
 		sendMail(acc, "Validazione email", body.toString());
 	}
 

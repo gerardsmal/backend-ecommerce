@@ -268,11 +268,20 @@ public class OrderImpl implements IOrderServices{
 			byte[] r = excelS.exportOrder(order);
 			
 			StringBuilder body = new StringBuilder();
-			body.append("<h1>DISCI SHOP</h1><br><br>");
+			body.append("<div style='font-family:Arial,sans-serif'>");
+			
 			body.append("Buongiorno ");
 			body.append(account.getNome());
 			body.append("<br><br>");
-			body.append("in allegato potete trovare l'ordine");
+			body.append("in allegato potete trovare l'ordine <br><br>");
+			
+			body.append(
+					  "<img src='cid:logo' " +
+					  "style='width:180px; max-width:180px; height:auto; " +
+					  "display:block; margin:0 auto 20px auto;'>"
+					);
+
+			
 			body.append("<br><br>Il team Dischi shop <br><br>");
 			
 			mailS.sendMailWithExcel(MailReq.builder()
